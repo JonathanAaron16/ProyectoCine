@@ -1,0 +1,43 @@
+nav {
+	display: flex;
+	justify-content: center;
+	gap: .75rem;
+	padding: 1rem clamp(1rem, 5vw, 5rem);
+	background: #30243a;
+	box-shadow: 0 .35rem 1rem rgb(48 36 58 / 18%);
+}
+
+nav button {
+	padding: .7rem 1.4rem;
+	font: 600 1rem "Trebuchet MS", sans-serif;
+	color: #fff8f2;
+	background: transparent;
+	border: 2px solid #b9a7ff;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+nav button:hover,
+nav button:focus-visible,
+nav button.active {
+	color: #30243a;
+	background: #b9a7ff;
+	transform: translateY(-2px);
+}
+
+nav button:focus-visible {
+	outline: 3px solid #ffe39a;
+	outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+	nav {
+		gap: .5rem;
+	}
+
+	nav button {
+		padding: .6rem 1rem;
+		font-size: .95rem;
+	}
+}
