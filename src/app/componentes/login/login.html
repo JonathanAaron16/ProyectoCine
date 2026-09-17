@@ -1,0 +1,23 @@
+<section class="contenedor-login">
+  <h2>Ingresar</h2>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Correo electrónico
+      <input type="email" [formField]="loginForm.email" />
+    </label>
+
+    <label>
+      Contraseña
+      <input type="password" [formField]="loginForm.password" />
+    </label>
+
+    @if (errorLogin()) {
+      <p class="error-general">{{ errorLogin() }}</p>
+    }
+
+    <button type="submit">Ingresar</button>
+  </form>
+
+  <a routerLink="/registro">Registrarse</a>
+</section>

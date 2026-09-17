@@ -1,0 +1,46 @@
+@if (pelicula) {
+  <section class="detalle">
+    <img [src]="pelicula.imagen" [alt]="pelicula.nombre" class="poster" />
+
+    <div class="info">
+      <h1>{{ pelicula.nombre }}</h1>
+
+      <div class="chips">
+        <span class="chip">{{ pelicula.clasificacionEdad }}</span>
+        <span class="chip">{{ pelicula.idioma }}</span>
+        <span class="chip">{{ pelicula.modalidad }}</span>
+        <span class="chip">{{ pelicula.duracionMinutos }} min</span>
+      </div>
+
+      <p class="generos">{{ pelicula.generos.join(' · ') }}</p>
+
+      <p class="sinopsis">{{ pelicula.sinopsis }}</p>
+
+      @if (pelicula.tienePreventa) {
+        <span class="badge-preventa">En preventa</span>
+      }
+
+      <a [routerLink]="['/compra']" class="boton-comprar">Comprar entradas</a>
+    </div>
+  </section>
+
+  <section class="resenas">
+    <h2>Reseñas ⭐ {{ promedioCalificacion }} / 5</h2>
+
+    @for (resena of resenas; track resena.id) {
+      <article class="resena">
+        <div class="estrellas">
+          @for (n of [1,2,3,4,5]; track n) {
+            <span [class.activa]="n <= resena.calificacion">★</span>
+          }
+        </div>
+        <p>{{ resena.comentario }}</p>
+        <small>{{ resena.fecha }}</small>
+      </article>
+    } @empty {
+      <p>Todavía no hay reseñas para esta película.</p>
+    }
+  </section>
+} @else {
+  <p class="no-encontrada">Película no encontrada.</p>
+}

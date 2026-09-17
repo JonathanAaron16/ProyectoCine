@@ -1,6 +1,12 @@
-<nav aria-label="Navegación principal">
+<!-- <nav aria-label="Navegación principal">
   <button routerLink="/inicio" routerLinkActive="active">Inicio</button>
   <button routerLink="/cartelera" routerLinkActive="active">Cartelera</button>
-	</nav>
+	</nav> -->
 
-<router-outlet />
+<app-encabezado></app-encabezado>
+
+<main class="contenido">
+  <router-outlet></router-outlet>
+</main>
+
+<app-pie-pagina></app-pie-pagina>

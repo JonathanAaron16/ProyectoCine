@@ -1,40 +1,21 @@
+<section class="banner">
+  <h1>Viví el cine como nunca antes</h1>
+  <p>Elegí tu película, tu función y tus butacas en minutos.</p>
+</section>
 
-<main>
-	
+<section class="destacadas">
+  <h2>Las más vistas</h2>
 
-	<header>
-		<h1>🎬 CineApp</h1>
-		<p>Tu cartelera de cine favorita</p>
-	</header>
-
-	<section aria-labelledby="cartelera-titulo">
-		<h2 id="cartelera-titulo">Cartelera de hoy</h2>
-
-		<div class="peliculas">
-			<article class="pelicula">
-				<div class="poster" aria-label="Póster de La última aventura">🌌</div>
-				<h3>La última aventura</h3>
-				<p>Aventura · 2h 05min</p>
-				<button type="button">Ver horarios</button>
-			</article>
-
-			<article class="pelicula">
-				<div class="poster" aria-label="Póster de Risas en familia">😂</div>
-				<h3>Risas en familia</h3>
-				<p>Comedia · 1h 45min</p>
-				<button type="button">Ver horarios</button>
-			</article>
-
-			<article class="pelicula">
-				<div class="poster" aria-label="Póster de Misterio en la noche">🕵️</div>
-				<h3>Misterio en la noche</h3>
-				<p>Suspenso · 1h  55min</p>
-				<button type="button">Ver horarios</button>
-			</article>
-		</div>
-	</section>
-
-	<footer>
-		<p>© 2024 CineApp · Disfruta del mejor cine</p>
-	</footer>
-</main>
+  <div class="grilla">
+    @for (pelicula of peliculasDestacadas; track pelicula.id) {
+      <a [routerLink]="['/peliculas', pelicula.id]" class="tarjeta">
+        <img [src]="pelicula.imagen" [alt]="pelicula.nombre" />
+        <h3>{{ pelicula.nombre }}</h3>
+        <span class="clasificacion">{{ pelicula.clasificacionEdad }}</span>
+        @if (pelicula.tienePreventa) {
+          <span class="badge-preventa">Preventa</span>
+        }
+      </a>
+    }
+  </div>
+</section>

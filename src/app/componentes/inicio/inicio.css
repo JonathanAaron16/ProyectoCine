@@ -1,110 +1,58 @@
-/* Paleta pastel con buen contraste y acentos cinematográficos */
-:host {
-	--fondo: #fff8f2;
-	--superficie: #ffffff;
-	--texto: #30243a;
-	--muted: #725f78;
-	--coral: #ff8f8f;
-	--lavanda: #b9a7ff;
-	--menta: #9ee6cf;
-	--amarillo: #ffe39a;
-	display: block;
+.banner {
+  background: linear-gradient(135deg, #141414, #2b0000);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-main {
-	min-height: 100vh;
-	padding: 3rem clamp(1rem, 5vw, 5rem);
-	font-family: "Trebuchet MS", sans-serif;
-	color: var(--texto);
-	background: linear-gradient(135deg, var(--fondo), #f2edff);
+.banner h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
 }
 
-header {
-	max-width: 1100px;
-	margin: 0 auto 2.5rem;
-	padding: 2.5rem;
-	text-align: center;
-	border-radius: 2rem;
-	background: linear-gradient(120deg, var(--lavanda), var(--coral));
-	box-shadow: 0 1rem 2rem rgb(91 64 120 / 18%);
+.destacadas h2 {
+  margin-bottom: 1rem;
 }
 
-h1 {
-	margin: 0;
-	font-size: clamp(2.2rem, 6vw, 4rem);
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
 }
 
-header p {
-	margin: .75rem 0 0;
-	font-size: 1.15rem;
+.tarjeta {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
-section {
-	max-width: 1100px;
-	margin: auto;
+.tarjeta img {
+  width: 100%;
+  border-radius: 6px;
+  aspect-ratio: 2/3;
+  object-fit: cover;
 }
 
-h2 {
-	margin-bottom: 1.5rem;
-	font-size: 2rem;
+.tarjeta h3 {
+  font-size: 0.95rem;
+  margin: 0.5rem 0 0.25rem;
 }
 
-.peliculas {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-	gap: 1.5rem;
+.clasificacion {
+  font-size: 0.75rem;
+  color: #666;
 }
 
-.pelicula {
-	padding: 1rem;
-	text-align: center;
-	background: var(--superficie);
-	border: 3px solid transparent;
-	border-radius: 1.5rem;
-	box-shadow: 0 .75rem 1.5rem rgb(91 64 120 / 12%);
-	transition: transform .2s ease, box-shadow .2s ease;
+.badge-preventa {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: #e50914;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
 }
-
-.pelicula:nth-child(1) { border-color: var(--menta); }
-.pelicula:nth-child(2) { border-color: var(--amarillo); }
-.pelicula:nth-child(3) { border-color: var(--lavanda); }
-
-.pelicula:hover {
-	transform: translateY(-.4rem);
-	box-shadow: 0 1rem 2rem rgb(91 64 120 / 20%);
-}
-
-.poster {
-	display: grid;
-	place-items: center;
-	height: 180px;
-	margin-bottom: 1rem;
-	font-size: 4.5rem;
-	border-radius: 1rem;
-	background: linear-gradient(135deg, var(--amarillo), var(--menta));
-}
-
-.pelicula:nth-child(2) .poster { background: linear-gradient(135deg, var(--coral), var(--amarillo)); }
-.pelicula:nth-child(3) .poster { background: linear-gradient(135deg, var(--lavanda), var(--menta)); }
-
-h3 { margin: .75rem 0 .4rem; font-size: 1.3rem; }
-.pelicula p { margin: 0 0 1rem; color: var(--muted); }
-
-button {
-	padding: .75rem 1.2rem;
-	font: inherit;
-	font-weight: bold;
-	color: var(--texto);
-	background: var(--coral);
-	border: 0;
-	border-radius: 999px;
-	cursor: pointer;
-	transition: filter .2s ease, transform .2s ease;
-}
-
-button:hover, button:focus-visible {
-	filter: brightness(.95) saturate(1.2);
-	transform: scale(1.04);
-}
-
-button:focus-visible { outline: 3px solid var(--lavanda); outline-offset: 3px; }
