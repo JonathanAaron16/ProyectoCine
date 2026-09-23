@@ -1,0 +1,22 @@
+<section class="contenedor-form">
+  <h2>Nueva sala</h2>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Nombre de la sala
+      <input type="text" [formField]="salaForm.nombre" placeholder="Ej: Sala 1" />
+    </label>
+
+    <p class="info">
+      Se generarán automáticamente 518 butacas: filas A-I y L-Q (comunes), fila J (accesible), filas R-S-T (VIP).
+    </p>
+
+    @if (errorGuardado()) {
+      <p class="error-general">{{ errorGuardado() }}</p>
+    }
+
+    <button type="submit" [disabled]="guardando()">
+      {{ guardando() ? 'Generando butacas...' : 'Crear sala' }}
+    </button>
+  </form>
+</section>

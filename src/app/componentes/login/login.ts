@@ -3,6 +3,7 @@ import { form, FormField, required, email } from '@angular/forms/signals';
 import { RouterLink, Router } from '@angular/router';
 import { LoginData } from '../../models/login-data';
 import { Auth } from '../../servicios/auth';
+import { Usuarios } from '../../servicios/usuarios';
 
 @Component({
   imports: [FormField, RouterLink],
@@ -25,23 +26,25 @@ export class Login {
 
   errorLogin = signal('');
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: Auth, private usuariosService: Usuarios, private router: Router) {}
 
   async onSubmit(event: Event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const credentials = this.loginModel();
+  const credentials = this.loginModel();
+  const result = await this.auth.signIn(credentials.email, credentials.password);
 
-    // Hardcodeado por ahora — en el Split 3 esto llama de verdad a Supabase
-    console.log('Iniciando sesión con:', credentials);
+  if (result.error) {
+    this.errorLogin.set('Correo o contraseña incorrectos');
+    return;
+  }
 
-    const result = await this.auth.signIn(credentials.email, credentials.password);
+  const perfil = await this.usuariosService.obtenerPerfil(result.data.user.id);
 
-    if (result.error) {
-      this.errorLogin.set('Correo o contraseña incorrectos');
-      return;
-    }
-
+  if (perfil?.rol === 'administrador') {
+    this.router.navigate(['/admin']);
+  } else {
     this.router.navigate(['/']);
   }
+}
 }

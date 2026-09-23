@@ -1,0 +1,1 @@
+import{a as l,i as f,o as r,r as d,s,t as a}from"./chunk-BVBBq_UW.js";d();export{s as Headers,l as Request,a as Response,f as default,r as fetch};

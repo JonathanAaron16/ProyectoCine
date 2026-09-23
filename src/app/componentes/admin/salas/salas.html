@@ -1,0 +1,31 @@
+<section class="panel-admin">
+  <div class="encabezado-panel">
+    <h1>Salas</h1>
+    <a routerLink="/admin/salas/nueva" class="boton-agregar">+ Nueva sala</a>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Capacidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (sala of salas(); track sala.id) {
+          <tr>
+            <td>{{ sala.nombre }}</td>
+            <td>{{ sala.capacidad }} butacas</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="2">No hay salas creadas todavía.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

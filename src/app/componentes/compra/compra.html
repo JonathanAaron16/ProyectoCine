@@ -1,1 +1,53 @@
-<p>compra works!</p>
+@if (cargando()) {
+  <p>Cargando...</p>
+} @else if (funcion(); as f) {
+  <section class="resumen-funcion">
+    <h1>{{ f.peliculas.nombre }}</h1>
+    <p>{{ f.fecha }} — {{ f.hora }} — {{ f.salas.nombre }} — {{ f.modalidad }} ({{ f.idioma }})</p>
+  </section>
+
+  @if (requiereMayoriaDeEdad && !sesion.usuarioActual()) {
+    <p class="aviso-edad">Esta función es +18. Necesitás iniciar sesión para verificar tu edad antes de comprar.</p>
+  }
+
+  <section class="leyenda">
+    <span class="item"><span class="cuadro comun"></span> Común</span>
+    <span class="item"><span class="cuadro accesible"></span> Accesible</span>
+    <span class="item"><span class="cuadro vip"></span> VIP</span>
+    <span class="item"><span class="cuadro ocupada"></span> Ocupada</span>
+    <span class="item"><span class="cuadro seleccionada"></span> Seleccionada</span>
+  </section>
+
+  <section class="mapa-butacas">
+    @for (butaca of butacas(); track butaca.id) {
+      <button
+        class="butaca"
+        [class]="butaca.tipo"
+        [class.ocupada]="ocupadas().has(butaca.id)"
+        [class.seleccionada]="seleccionadas().has(butaca.id)"
+        [disabled]="ocupadas().has(butaca.id)"
+        (click)="toggleButaca(butaca)"
+        [title]="butaca.fila + butaca.numero + ' - ' + (butaca.tipo === 'vip' ? 'VIP' : butaca.tipo)"
+      >
+        {{ butaca.fila }}{{ butaca.numero }}
+      </button>
+    }
+  </section>
+
+  <section class="resumen-compra">
+    <p>Butacas seleccionadas: {{ butacasSeleccionadas.length }}</p>
+    <p class="total">Total: ${{ total }}</p>
+
+    @if (butacasSeleccionadas.length > 0) {
+      <ul class="detalle-butacas">
+        @for (b of butacasSeleccionadas; track b.id) {
+          <li>{{ b.fila }}{{ b.numero }} ({{ b.tipo }}) — ${{ precioButaca(b) }}</li>
+        }
+      </ul>
+    }
+
+    <button class="boton-confirmar" [disabled]="!puedeComprar">Continuar</button>
+  </section>
+} @else {
+  <p>Función no encontrada.</p>
+}

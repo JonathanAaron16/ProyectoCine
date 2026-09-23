@@ -1,0 +1,58 @@
+<section class="contenedor-form">
+  <h2>Nueva función</h2>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Película
+      <select [formField]="funcionForm.peliculaId">
+        <option [value]="">Seleccionar...</option>
+        @for (p of peliculas(); track p.id) {
+          <option [value]="p.id">{{ p.nombre }} ({{ p.duracionMinutos }} min)</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Fecha
+      <input type="date" [formField]="funcionForm.fecha" />
+    </label>
+
+    <label>
+      Horario
+      <input type="time" [formField]="funcionForm.hora" />
+    </label>
+
+    <label>
+      Idioma
+      <select [formField]="funcionForm.idioma">
+        <option value="Castellano">Castellano</option>
+        <option value="Subtitulada">Subtitulada</option>
+      </select>
+    </label>
+
+    <label>
+      Modalidad
+      <select [formField]="funcionForm.modalidad">
+        <option value="2D">2D</option>
+        <option value="3D">3D</option>
+        <option value="4D">4D</option>
+        <option value="5D">5D</option>
+      </select>
+    </label>
+
+    <label>
+      Precio base
+      <input type="number" [formField]="funcionForm.precioBase" />
+    </label>
+
+    <p class="info">La sala se asigna automáticamente según disponibilidad.</p>
+
+    @if (errorGuardado()) {
+      <p class="error-general">{{ errorGuardado() }}</p>
+    }
+
+    <button type="submit" [disabled]="guardando()">
+      {{ guardando() ? 'Buscando sala disponible...' : 'Crear función' }}
+    </button>
+  </form>
+</section>

@@ -14,6 +14,7 @@ export interface Compra {
 
 export interface Entrada {
   id: number;
+   compraId: number;
   funcionId: number;
   butacaId: number;
   precio: number;

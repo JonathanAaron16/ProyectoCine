@@ -1,0 +1,1 @@
+function n(e){return{id:e.id,nombre:e.nombre,imagen:e.imagen,sinopsis:e.sinopsis,duracionMinutos:e.duracionMinutos,generos:(e.peliculas_generos??[]).map(a=>a.generos.nombre),clasificacionEdad:e.clasificacionEdad,idioma:e.idioma,modalidad:e.modalidad,publicada:e.publicada,destacada:e.destacada,tienePreventa:e.tienePreventa,fechaEstreno:e.fechaEstreno}}export{n as t};

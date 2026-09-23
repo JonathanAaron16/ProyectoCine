@@ -12,5 +12,24 @@ export interface Pelicula {
   publicada: boolean;       // si está disponible en cartelera
   destacada: boolean;       // si se muestra en la página principal
   tienePreventa: boolean;
-  fechaEstreno?: string;    // para "Próximamente"
+  fechaEstreno?: string | null;    // para "Próximamente"
+}
+
+// models/pelicula.ts — agregamos esta función utilitaria al final del archivo
+export function mapearPelicula(fila: any): Pelicula {
+  return {
+    id: fila.id,
+    nombre: fila.nombre,
+    imagen: fila.imagen,
+    sinopsis: fila.sinopsis,
+    duracionMinutos: fila.duracionMinutos,
+    generos: (fila.peliculas_generos ?? []).map((pg: any) => pg.generos.nombre),
+    clasificacionEdad: fila.clasificacionEdad,
+    idioma: fila.idioma,
+    modalidad: fila.modalidad,
+    publicada: fila.publicada,
+    destacada: fila.destacada,
+    tienePreventa: fila.tienePreventa,
+    fechaEstreno: fila.fechaEstreno,
+  };
 }

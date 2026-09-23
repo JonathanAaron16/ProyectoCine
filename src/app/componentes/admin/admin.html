@@ -1,1 +1,47 @@
-<p>admin works!</p>
+<section class="panel-admin">
+ <div class="encabezado-panel">
+  <h1>Panel de administración</h1>
+  <div class="acciones-panel">
+    <a routerLink="/admin/funciones" class="boton-agregar">Funciones</a>
+    <a routerLink="/admin/salas" class="boton-agregar">Salas</a>
+    <a routerLink="/admin/peliculas/nueva" class="boton-agregar">+ Nueva película</a>
+    
+  </div>
+</div>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Clasificación</th>
+          <th>Modalidad</th>
+          <th>Publicada</th>
+          <th>Destacada</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pelicula of peliculas(); track pelicula.id) {
+          <tr>
+            <td>{{ pelicula.nombre }}</td>
+            <td>{{ pelicula.clasificacionEdad }}</td>
+            <td>{{ pelicula.modalidad }}</td>
+            <td>{{ pelicula.publicada ? 'Sí' : 'No' }}</td>
+            <td>{{ pelicula.destacada ? 'Sí' : 'No' }}</td>
+            <td class="acciones">
+              <a [routerLink]="['/admin/peliculas', pelicula.id, 'editar']">Editar</a>
+              <button (click)="eliminar(pelicula.id)" class="boton-eliminar">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">No hay películas cargadas todavía.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

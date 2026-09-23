@@ -6,16 +6,22 @@
 <section class="destacadas">
   <h2>Las más vistas</h2>
 
-  <div class="grilla">
-    @for (pelicula of peliculasDestacadas; track pelicula.id) {
-      <a [routerLink]="['/peliculas', pelicula.id]" class="tarjeta">
-        <img [src]="pelicula.imagen" [alt]="pelicula.nombre" />
-        <h3>{{ pelicula.nombre }}</h3>
-        <span class="clasificacion">{{ pelicula.clasificacionEdad }}</span>
-        @if (pelicula.tienePreventa) {
-          <span class="badge-preventa">Preventa</span>
-        }
-      </a>
-    }
-  </div>
+  @if (cargando()) {
+    <p class="cargando">Cargando...</p>
+  } @else {
+    <div class="grilla">
+      @for (pelicula of peliculasDestacadas(); track pelicula.id) {
+        <a [routerLink]="['/peliculas', pelicula.id]" class="tarjeta">
+          <img [src]="pelicula.imagen" [alt]="pelicula.nombre" />
+          <h3>{{ pelicula.nombre }}</h3>
+          <span class="clasificacion">{{ pelicula.clasificacionEdad }}</span>
+          @if (pelicula.tienePreventa) {
+            <span class="badge-preventa">Preventa</span>
+          }
+        </a>
+      } @empty {
+        <p>No hay películas destacadas todavía.</p>
+      }
+    </div>
+  }
 </section>

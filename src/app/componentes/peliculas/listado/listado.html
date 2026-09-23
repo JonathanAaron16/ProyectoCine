@@ -1,1 +1,32 @@
-<p>listado works!</p>
+<section class="filtros">
+  <input
+    type="text"
+    placeholder="Buscar película..."
+    [(ngModel)]="textoBusqueda"
+    class="buscador"
+  />
+
+  <select [(ngModel)]="generoSeleccionado" class="selector-genero">
+    <option value="">Todos los géneros</option>
+    @for (genero of generosDisponibles; track genero) {
+      <option [value]="genero">{{ genero }}</option>
+    }
+  </select>
+</section>
+
+@if (cargando()) {
+  <p class="cargando">Cargando películas...</p>
+} @else {
+  <section class="grilla">
+    @for (pelicula of peliculasFiltradas; track pelicula.id) {
+      <a [routerLink]="['/peliculas', pelicula.id]" class="tarjeta">
+        <img [src]="pelicula.imagen" [alt]="pelicula.nombre" />
+        <h3>{{ pelicula.nombre }}</h3>
+        <p class="generos">{{ pelicula.generos.join(', ') }}</p>
+        <span class="clasificacion">{{ pelicula.clasificacionEdad }}</span>
+      </a>
+    } @empty {
+      <p class="sin-resultados">No se encontraron películas.</p>
+    }
+  </section>
+}

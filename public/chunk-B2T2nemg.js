@@ -1,0 +1,1 @@
+import{B as Pa,J as Ry,n as $v,v as Fa}from"./chunk-DQnzrecV.js";var s=class r{static ɵfac=function(e){return new(e||r)};static ɵcmp=Ry({type:r,selectors:[[`app-error`]],decls:2,vars:0,template:function(e,m){e&1&&(Pa(0,`p`),$v(1,`error works!`),Fa())},encapsulation:2})};export{s as Error};

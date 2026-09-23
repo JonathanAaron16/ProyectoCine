@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Sesion } from '../../servicios/sesion';
 
 @Component({
-  imports: [RouterLink, RouterLinkActive],
   selector: 'app-encabezado',
-  styleUrl: './encabezado.css',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './encabezado.html',
+  styleUrl: './encabezado.css'
 })
-export class Encabezado {}
+export class Encabezado {
+  constructor(public sesion: Sesion) {}
+}

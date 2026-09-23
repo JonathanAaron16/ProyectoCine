@@ -1,33 +1,82 @@
-@if (pelicula) {
+@if (cargando()) {
+  <p class="cargando">Cargando...</p>
+} @else if (pelicula(); as p) {
   <section class="detalle">
-    <img [src]="pelicula.imagen" [alt]="pelicula.nombre" class="poster" />
+    <!-- ... resto igual ... -->
+  </section>
+
+  <section class="resenas">
+    <!-- ... resto igual ... -->
+  </section>
+} @else {
+  <p class="no-encontrada">Película no encontrada.</p>
+}
+
+@if (pelicula(); as p) {
+
+ 
+  <section class="detalle">
+    <img [src]="p.imagen" [alt]="p.nombre" class="poster" />
 
     <div class="info">
-      <h1>{{ pelicula.nombre }}</h1>
+      <h1>{{ p.nombre }}</h1>
 
       <div class="chips">
-        <span class="chip">{{ pelicula.clasificacionEdad }}</span>
-        <span class="chip">{{ pelicula.idioma }}</span>
-        <span class="chip">{{ pelicula.modalidad }}</span>
-        <span class="chip">{{ pelicula.duracionMinutos }} min</span>
+        <span class="chip">{{ p.clasificacionEdad }}</span>
+        <span class="chip">{{ p.idioma }}</span>
+        <span class="chip">{{ p.modalidad }}</span>
+        <span class="chip">{{ p.duracionMinutos }} min</span>
       </div>
 
-      <p class="generos">{{ pelicula.generos.join(' · ') }}</p>
+      <p class="generos">{{ p.generos.join(' · ') }}</p>
 
-      <p class="sinopsis">{{ pelicula.sinopsis }}</p>
+      <p class="sinopsis">{{ p.sinopsis }}</p>
 
-      @if (pelicula.tienePreventa) {
+      @if (p.tienePreventa) {
         <span class="badge-preventa">En preventa</span>
       }
 
-      <a [routerLink]="['/compra']" class="boton-comprar">Comprar entradas</a>
+      
+      <!-- <button (click)="irAFunciones()" class="boton-comprar">Ver funciones</button> -->
+      <!-- detalle.html -->
+      <button (click)="mostrarModal.set(true)" class="boton-comprar">Comprar entradas</button>
+
+      @if (mostrarModal()) {
+        <div class="fondo-modal" (click)="mostrarModal.set(false)">
+          <div class="contenido-modal" (click)="$event.stopPropagation()">
+            <h3>Elegí una función</h3>
+            @for (funcion of funciones(); track funcion.id) {
+              <a [routerLink]="['/compra', funcion.id]" class="funcion-item">
+                {{ funcion.fecha }} — {{ funcion.hora }} — {{ funcion.modalidad }} ({{ funcion.idioma }})
+              </a>
+            } @empty {
+              <p>No hay funciones programadas.</p>
+            }
+            <button (click)="mostrarModal.set(false)" class="cerrar-modal">Cerrar</button>
+          </div>
+        </div>
+      }
+
     </div>
   </section>
+
+ <!-- <section id="funciones-disponibles" class="funciones-disponibles">
+    <h3>Funciones disponibles</h3>
+    @for (funcion of funciones(); track funcion.id) {
+      <a [routerLink]="['/compra', funcion.id]" class="funcion-item">
+        {{ funcion.fecha }} — {{ funcion.hora }} — {{ funcion.modalidad }} ({{ funcion.idioma }})
+      </a>
+    } @empty {
+      <p>No hay funciones programadas para esta película.</p>
+    }
+  </section> -->
+
+  
 
   <section class="resenas">
     <h2>Reseñas ⭐ {{ promedioCalificacion }} / 5</h2>
 
-    @for (resena of resenas; track resena.id) {
+    @for (resena of resenas(); track resena.id) {
       <article class="resena">
         <div class="estrellas">
           @for (n of [1,2,3,4,5]; track n) {
@@ -35,12 +84,12 @@
           }
         </div>
         <p>{{ resena.comentario }}</p>
-        <small>{{ resena.fecha }}</small>
+        <small>{{ resena.fecha | date:'dd/MM/yyyy' }}</small>
       </article>
     } @empty {
       <p>Todavía no hay reseñas para esta película.</p>
     }
   </section>
-} @else {
+} @else if (!cargando()) {
   <p class="no-encontrada">Película no encontrada.</p>
 }

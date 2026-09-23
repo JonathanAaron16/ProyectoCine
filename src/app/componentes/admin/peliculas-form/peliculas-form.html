@@ -1,0 +1,92 @@
+<section class="contenedor-form">
+  <h2>{{ esEdicion() ? 'Editar película' : 'Nueva película' }}</h2>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Nombre
+      <input type="text" [formField]="peliculaForm.nombre" />
+    </label>
+
+    <label>
+      Imagen (URL)
+      <input type="text" [formField]="peliculaForm.imagen" />
+    </label>
+
+    <label>
+      Sinopsis
+      <textarea [formField]="peliculaForm.sinopsis"></textarea>
+    </label>
+
+    <label>
+      Duración (minutos)
+      <input type="number" [formField]="peliculaForm.duracionMinutos" />
+    </label>
+
+    <label>
+      Clasificación de edad
+      <select [formField]="peliculaForm.clasificacionEdad">
+        <option value="ATP">ATP</option>
+        <option value="+13">+13</option>
+        <option value="+18">+18</option>
+      </select>
+    </label>
+
+    <label>
+      Idioma
+      <select [formField]="peliculaForm.idioma">
+        <option value="Castellano">Castellano</option>
+        <option value="Subtitulada">Subtitulada</option>
+      </select>
+    </label>
+
+    <label>
+      Modalidad
+      <select [formField]="peliculaForm.modalidad">
+        <option value="2D">2D</option>
+        <option value="3D">3D</option>
+        <option value="4D">4D</option>
+        <option value="5D">5D</option>
+      </select>
+    </label>
+
+    <fieldset>
+      <legend>Géneros</legend>
+      @for (genero of generosDisponibles(); track genero.id) {
+        <label class="checkbox">
+          <input
+            type="checkbox"
+            [checked]="generosSeleccionados().includes(genero.id)"
+            (change)="toggleGenero(genero.id)"
+          />
+          {{ genero.nombre }}
+        </label>
+      }
+    </fieldset>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="peliculaForm.publicada" />
+      Publicada (visible en cartelera)
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="peliculaForm.destacada" />
+      Destacada (aparece en la home)
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="peliculaForm.tienePreventa" />
+      Tiene preventa
+    </label>
+
+    <label>
+      Fecha de estreno (si es "Próximamente")
+      <input type="date" [formField]="peliculaForm.fechaEstreno" />
+    </label>
+
+    @if (errorGuardado()) {
+      <p class="error-general">{{ errorGuardado() }}</p>
+    }
+
+    <button type="submit">{{ esEdicion() ? 'Guardar cambios' : 'Crear película' }}</button>
+  </form>
+</section>

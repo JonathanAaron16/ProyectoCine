@@ -1,11 +1,19 @@
-
 <header class="encabezado">
   <a routerLink="/" class="logo">🎬 Cine App</a>
 
   <nav class="nav">
     <a routerLink="/" routerLinkActive="activo" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
     <a routerLink="/peliculas" routerLinkActive="activo">Películas</a>
-    <a routerLink="/login" routerLinkActive="activo">Ingresar</a>
-    <a routerLink="/registro" routerLinkActive="activo">Registrarme</a>
+
+    @if (sesion.usuarioActual(); as usuario) {
+      @if (sesion.esAdmin()) {
+        <a routerLink="/admin" routerLinkActive="activo">Admin</a>
+      }
+      <span class="saludo">Hola, {{ usuario.nombre }}</span>
+      <button (click)="sesion.cerrarSesion()" class="boton-salir">Salir</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="activo">Ingresar</a>
+      <a routerLink="/registro" routerLinkActive="activo">Registrarme</a>
+    }
   </nav>
 </header>

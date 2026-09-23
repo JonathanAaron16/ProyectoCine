@@ -1,0 +1,37 @@
+<section class="panel-admin">
+  <div class="encabezado-panel">
+    <h1>Funciones</h1>
+    <a routerLink="/admin/funciones/nueva" class="boton-agregar">+ Nueva función</a>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Película</th>
+          <th>Sala</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Modalidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (f of funciones(); track f.id) {
+          <tr>
+            <td>{{ f.peliculas?.nombre }}</td>
+            <td>{{ f.salas?.nombre }}</td>
+            <td>{{ f.fecha }}</td>
+            <td>{{ f.hora }}</td>
+            <td>{{ f.modalidad }}</td>
+            <td><button (click)="eliminar(f.id)" class="boton-eliminar">Eliminar</button></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6">No hay funciones cargadas.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
