@@ -18,8 +18,10 @@ export class Listado implements OnInit {
   textoBusqueda: string = '';
   generoSeleccionado: string = '';
 
+  // Inicializa el servicio utilizado para consultar las películas.
   constructor(private peliculasService: Peliculas) {}
 
+  // Carga todas las películas cuando se inicia el listado.
   ngOnInit() {
     this.peliculasService.obtenerTodas().then(resultado => {
       console.log('Resultado completo:', resultado); 
@@ -30,11 +32,13 @@ export class Listado implements OnInit {
     });
   }
 
+  // Obtiene los géneros sin repetir de todas las películas cargadas.
   get generosDisponibles(): string[] {
     const todos = this.peliculas().flatMap(p => p.generos);
     return [...new Set(todos)];
   }
 
+  // Filtra las películas publicadas según el texto y el género seleccionados.
   get peliculasFiltradas(): Pelicula[] {
     return this.peliculas().filter(p => {
       const coincideNombre = p.nombre

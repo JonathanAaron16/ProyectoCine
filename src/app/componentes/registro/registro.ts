@@ -40,8 +40,10 @@ export class Registro {
 
   errorRegistro = signal('');
 
+  // Inicializa los servicios de autenticación, usuarios y navegación.
   constructor(private auth: Auth, private usuarios: Usuarios, private router: Router) {}
 
+  // Registra la cuenta y crea el perfil del nuevo usuario.
   async onSubmit(event: Event) {
     event.preventDefault();
 

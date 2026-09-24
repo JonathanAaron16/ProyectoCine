@@ -16,6 +16,7 @@ export interface Pelicula {
 }
 
 // models/pelicula.ts — agregamos esta función utilitaria al final del archivo
+// Convierte una fila de la base de datos al modelo utilizado por la aplicación.
 export function mapearPelicula(fila: any): Pelicula {
   return {
     id: fila.id,

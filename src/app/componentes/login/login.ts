@@ -26,8 +26,10 @@ export class Login {
 
   errorLogin = signal('');
 
+  // Inicializa los servicios de autenticación, usuarios y navegación.
   constructor(private auth: Auth, private usuariosService: Usuarios, private router: Router) {}
 
+  // Autentica al usuario y lo redirige según su rol.
   async onSubmit(event: Event) {
   event.preventDefault();
 

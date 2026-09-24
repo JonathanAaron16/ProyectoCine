@@ -14,8 +14,10 @@ export class SalasComponent implements OnInit {
   salas = signal<Sala[]>([]);
   cargando = signal(true);
 
+  // Inicializa el servicio utilizado para administrar las salas.
   constructor(private salasService: Salas) {}
 
+  // Carga todas las salas cuando se inicia el componente.
   ngOnInit() {
     this.salasService.obtenerTodas().then(resultado => {
       if (resultado.data) {

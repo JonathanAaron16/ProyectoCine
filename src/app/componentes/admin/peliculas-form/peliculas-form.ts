@@ -19,6 +19,7 @@ interface Genero {
   styleUrl: './peliculas-form.css'
 })
 export class PeliculasForm implements OnInit, Iform {
+  // Inicializa la ruta, el navegador y el servicio de películas.
   guardadoConExito = signal(false);
   esEdicion = signal(false);
   peliculaId = signal<number | null>(null);
@@ -58,6 +59,7 @@ export class PeliculasForm implements OnInit, Iform {
     private peliculasService: Peliculas
   ) {}
 
+  // Carga los géneros y, si corresponde, los datos de la película editada.
   async ngOnInit() {
     const { data: generos } = await supabase.from('generos').select('*').order('nombre');
     this.generosDisponibles.set(generos ?? []);
@@ -90,6 +92,7 @@ export class PeliculasForm implements OnInit, Iform {
     }
   }
 
+  // Agrega o quita un género de la selección actual.
   toggleGenero(id: number) {
     const actuales = this.generosSeleccionados();
     if (actuales.includes(id)) {
@@ -99,6 +102,7 @@ export class PeliculasForm implements OnInit, Iform {
     }
   }
 
+  // Valida y guarda una película nueva o los cambios de una existente.
    async onSubmit(event: Event) {
     event.preventDefault();
 

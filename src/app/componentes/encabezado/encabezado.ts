@@ -10,5 +10,6 @@ import { Sesion } from '../../servicios/sesion';
   styleUrl: './encabezado.css'
 })
 export class Encabezado {
+  // Inicializa la sesión que utiliza el encabezado para mostrar el estado del usuario.
   constructor(public sesion: Sesion) {}
 }

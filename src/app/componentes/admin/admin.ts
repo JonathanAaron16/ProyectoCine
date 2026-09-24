@@ -14,12 +14,15 @@ export class Admin implements OnInit {
   peliculas = signal<Pelicula[]>([]);
   cargando = signal(true);
 
+  // Inicializa el servicio utilizado para administrar las películas.
   constructor(private peliculasService: Peliculas) {}
 
+  // Carga las películas cuando se inicia el componente.
   ngOnInit() {
     this.cargar();
   }
 
+  // Obtiene y muestra todas las películas disponibles para administrar.
   cargar() {
     this.cargando.set(true);
     this.peliculasService.obtenerTodas().then(resultado => {
@@ -30,6 +33,7 @@ export class Admin implements OnInit {
     });
   }
 
+  // Elimina una película después de solicitar confirmación al usuario.
   async eliminar(id: number) {
     if (!confirm('¿Seguro que querés eliminar esta película?')) return;
 

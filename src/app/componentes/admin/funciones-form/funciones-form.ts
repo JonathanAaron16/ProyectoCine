@@ -34,17 +34,21 @@ export class FuncionesForm implements OnInit, Iform {
     required(schemaPath.precioBase, { message: 'Ingresá el precio base' });
   });
 
+  // Inicializa los servicios necesarios para crear funciones y navegar.
   constructor(private funcionesService: Funciones, private router: Router) {}
 
+  // Carga las películas publicadas que pueden tener nuevas funciones.
   async ngOnInit() {
     const { data } = await supabase.from('peliculas').select('id, nombre, duracionMinutos').eq('publicada', true);
     this.peliculas.set(data ?? []);
   }
 
+  // Indica si todavía hay cambios pendientes de guardar.
   noGuardado(): boolean {
     return !this.guardadoConExito();
   }
 
+  // Valida y guarda la función enviada desde el formulario.
   async onSubmit(event: Event) {
     event.preventDefault();
     this.guardando.set(true);

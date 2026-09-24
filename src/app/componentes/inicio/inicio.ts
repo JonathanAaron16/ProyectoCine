@@ -64,8 +64,10 @@ export class Inicio {
 
 
 
- constructor(private peliculasService: Peliculas) {}
+  // Inicializa el servicio utilizado para cargar las películas destacadas.
+  constructor(private peliculasService: Peliculas) {}
 
+  // Carga las películas destacadas cuando se inicia la página principal.
   ngOnInit() {
     this.peliculasService.obtenerDestacadas().then(resultado => {
       if (resultado.data) {

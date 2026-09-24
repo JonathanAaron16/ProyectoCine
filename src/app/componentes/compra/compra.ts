@@ -24,12 +24,14 @@ export class Compra implements OnInit, OnDestroy {
   private funcionId!: number;
   private intervalo?: ReturnType<typeof setInterval>;
 
+  // Inicializa la ruta, el servicio de compras y la sesión del usuario.
   constructor(
     private route: ActivatedRoute,
     private comprasService: Compras,
     public sesion: Sesion
   ) {}
 
+  // Carga la función, la sala y las butacas al iniciar la compra.
   async ngOnInit() {
     this.funcionId = Number(this.route.snapshot.paramMap.get('funcionId'));
 
@@ -48,10 +50,12 @@ export class Compra implements OnInit, OnDestroy {
     this.intervalo = setInterval(() => this.actualizarOcupadas(), INTERVALO_ACTUALIZACION_MS);
   }
 
+  // Libera el intervalo de actualización al destruir el componente.
   ngOnDestroy() {
     if (this.intervalo) clearInterval(this.intervalo);
   }
 
+  // Actualiza las butacas ocupadas y elimina selecciones que ya no están disponibles.
   private async actualizarOcupadas() {
     const resultado = await this.comprasService.obtenerButacasOcupadas(this.funcionId);
     if (resultado.data) {
@@ -67,6 +71,7 @@ export class Compra implements OnInit, OnDestroy {
     }
   }
 
+  // Selecciona o deselecciona una butaca disponible.
   toggleButaca(butaca: Butaca) {
     if (this.ocupadas().has(butaca.id)) return;
 
@@ -79,29 +84,35 @@ export class Compra implements OnInit, OnDestroy {
     this.seleccionadas.set(actuales);
   }
 
+  // Calcula el precio de una butaca según su tipo.
   precioButaca(butaca: Butaca): number {
     const base = this.funcion()?.precioBase ?? 0;
     return butaca.tipo === 'vip' ? base * PRECIO_VIP_MULTIPLICADOR : base;
   }
 
+  // Devuelve las butacas seleccionadas por el usuario.
   get butacasSeleccionadas(): Butaca[] {
     return this.butacas().filter(b => this.seleccionadas().has(b.id));
   }
 
+  // Calcula el importe total de las butacas seleccionadas.
   get total(): number {
     return this.butacasSeleccionadas.reduce((acc, b) => acc + this.precioButaca(b), 0);
   }
 
+  // Indica si la función requiere que el comprador sea mayor de edad.
   get requiereMayoriaDeEdad(): boolean {
     return this.funcion()?.peliculas?.clasificacionEdad === '+18';
   }
 
+  // Indica si la compra cumple las condiciones necesarias para continuar.
   get puedeComprar(): boolean {
     if (this.seleccionadas().size === 0) return false;
     if (this.requiereMayoriaDeEdad && !this.esMayorDeEdad()) return false;
     return true;
   }
 
+  // Comprueba si el usuario actual tiene al menos 18 años.
   private esMayorDeEdad(): boolean {
     const usuario = this.sesion.usuarioActual();
     if (!usuario) return false;

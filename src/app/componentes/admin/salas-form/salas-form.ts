@@ -21,12 +21,15 @@ export class SalasForm {
   guardando = signal(false);
   guardadoConExito = signal(false);
 
+  // Inicializa el servicio de salas y el navegador de rutas.
   constructor(private salasService: Salas, private router: Router) {}
 
+  // Indica si todavía hay cambios pendientes de guardar.
   noGuardado(): boolean {
     return !this.guardadoConExito();
   }
 
+  // Valida y crea una sala junto con sus butacas.
   async onSubmit(event: Event) {
     event.preventDefault();
     this.guardando.set(true);

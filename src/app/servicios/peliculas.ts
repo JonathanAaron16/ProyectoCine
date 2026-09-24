@@ -5,6 +5,7 @@ import { Pelicula } from '../models/pelicula';
 @Injectable({ providedIn: 'root' })
 export class Peliculas {
 
+  // Obtiene todas las películas con sus géneros relacionados.
   obtenerTodas() {
     return supabase
       .from('peliculas')
@@ -12,6 +13,7 @@ export class Peliculas {
       .order('id');
   }
 
+  // Obtiene una película específica junto con sus géneros.
   obtenerPorId(id: number) {
     return supabase
       .from('peliculas')
@@ -20,6 +22,7 @@ export class Peliculas {
       .single();
   }
   
+  // Obtiene las películas destacadas que están publicadas.
   obtenerDestacadas() {
   return supabase
     .from('peliculas')
@@ -28,6 +31,7 @@ export class Peliculas {
     .eq('publicada', true);
 }
 
+  // Crea una película y registra sus relaciones con los géneros.
   crear(pelicula: Omit<Pelicula, 'id' | 'generos'>, generoIds: number[]) {
     return supabase
       .from('peliculas')
@@ -50,6 +54,7 @@ export class Peliculas {
       });
   }
 
+  // Actualiza los datos de una película existente.
   actualizar(id: number, pelicula: Partial<Omit<Pelicula, 'id' | 'generos'>>) {
     return supabase
       .from('peliculas')
@@ -57,6 +62,7 @@ export class Peliculas {
       .eq('id', id);
   }
 
+  // Elimina una película por su id.
   eliminar(id: number) {
     return supabase
       .from('peliculas')

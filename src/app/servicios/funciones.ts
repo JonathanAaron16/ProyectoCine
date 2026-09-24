@@ -4,10 +4,12 @@ import { Funcion } from '../models/funcion';
 
 const BUFFER_MINUTOS = 30;
 
+// Convierte una fecha y una hora en un objeto Date.
 function horaAFecha(fecha: string, hora: string): Date {
   return new Date(`${fecha}T${hora}`);
 }
 
+// Suma una cantidad de minutos a una fecha.
 function sumarMinutos(fecha: Date, minutos: number): Date {
   return new Date(fecha.getTime() + minutos * 60000);
 }
@@ -15,6 +17,7 @@ function sumarMinutos(fecha: Date, minutos: number): Date {
 @Injectable({ providedIn: 'root' })
 export class Funciones {
 
+  // Obtiene todas las funciones junto con sus películas y salas.
   obtenerTodas() {
     return supabase
       .from('funciones')
@@ -23,6 +26,7 @@ export class Funciones {
       .order('hora');
   }
 
+  // Busca una sala disponible y crea una nueva función.
   async crear(datos: Omit<Funcion, 'id' | 'salaId'>, duracionMinutos: number) {
     const salaId = await this.buscarSalaDisponible(datos.fecha, datos.hora, duracionMinutos);
 
@@ -33,10 +37,12 @@ export class Funciones {
     return supabase.from('funciones').insert([{ ...datos, salaId }]).select().single();
   }
 
+  // Elimina una función por su id.
   eliminar(id: number) {
     return supabase.from('funciones').delete().eq('id', id);
   }
 
+  // Busca una sala cuyo horario no se superponga con otra función.
   private async buscarSalaDisponible(fecha: string, hora: string, duracionMinutos: number): Promise<number | null> {
     const { data: salas } = await supabase.from('salas').select('id');
     if (!salas || salas.length === 0) return null;

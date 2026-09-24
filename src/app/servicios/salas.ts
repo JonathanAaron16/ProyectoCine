@@ -22,6 +22,7 @@ const DISTRIBUCION: FilaConfig[] = [
   ...['R', 'S', 'T'].map(f => ({ fila: f, tipo: 'vip' as const, columnas: COLUMNAS_COMUNES })),
 ]
 
+// Genera las butacas de una sala según la distribución definida.
 function generarButacas(salaId: number): Omit<Butaca, 'id'>[] {
   const butacas: Omit<Butaca, 'id'>[] = [];
 
@@ -39,6 +40,7 @@ function generarButacas(salaId: number): Omit<Butaca, 'id'>[] {
   return butacas;
 }
 
+// Calcula la capacidad total de una sala a partir de su distribución.
 function capacidadTotal(): number {
   return DISTRIBUCION.reduce((total, config) => total + config.columnas.length, 0);
 }
@@ -46,6 +48,7 @@ function capacidadTotal(): number {
 @Injectable({ providedIn: 'root' })
 export class Salas {
 
+  // Crea una sala y genera todas sus butacas; revierte la sala si falla la carga.
   async crearConButacas(nombre: string) {
     const { data: sala, error: errorSala } = await supabase
       .from('salas')
@@ -69,10 +72,12 @@ export class Salas {
     return { data: sala, error: null };
   }
 
+  // Obtiene todas las salas ordenadas por nombre.
   obtenerTodas() {
     return supabase.from('salas').select('*').order('nombre');
   }
 
+  // Obtiene y ordena las butacas de una sala determinada.
   obtenerButacas(salaId: number) {
     return supabase
       .from('butacas')

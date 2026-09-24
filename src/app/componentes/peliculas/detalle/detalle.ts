@@ -22,6 +22,7 @@ export class Detalle {
   
   mostrarModal = signal(false);
 
+  // Inicializa los servicios y carga la película indicada en la ruta.
   constructor(
     private route: ActivatedRoute,
     private peliculasService: Peliculas,
@@ -36,6 +37,7 @@ export class Detalle {
     //   document.getElementById('funciones-disponibles')?.scrollIntoView({ behavior: 'smooth' });
     // }
 
+    // Obtiene en paralelo los datos de la película, sus reseñas y sus funciones.
   private async cargarDatos(id: number) {
     const [resultadoPelicula, resultadoResenas, resultadoFunciones] = await Promise.all([
     this.peliculasService.obtenerPorId(id),
@@ -50,6 +52,7 @@ export class Detalle {
   this.cargando.set(false);
   }
 
+  // Calcula el promedio de calificación de las reseñas de la película.
   get promedioCalificacion(): number {
     const lista = this.resenas();
     if (lista.length === 0) return 0;
