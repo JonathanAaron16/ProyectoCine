@@ -19,20 +19,29 @@
   </section>
 
   <section class="mapa-butacas">
-    @for (butaca of butacas(); track butaca.id) {
-      <button
-        class="butaca"
-        [class]="butaca.tipo"
-        [class.ocupada]="ocupadas().has(butaca.id)"
-        [class.seleccionada]="seleccionadas().has(butaca.id)"
-        [disabled]="ocupadas().has(butaca.id)"
-        (click)="toggleButaca(butaca)"
-        [title]="butaca.fila + butaca.numero + ' - ' + (butaca.tipo === 'vip' ? 'VIP' : butaca.tipo)"
-      >
-        {{ butaca.fila }}{{ butaca.numero }}
-      </button>
-    }
-  </section>
+  @for (filaGrupo of filasAgrupadas; track filaGrupo.fila) {
+    <div class="fila" [class.espacio-antes]="margenExtra(filaGrupo.fila)">
+      <span class="etiqueta-fila">{{ filaGrupo.fila }}</span>
+
+      <div class="butacas-fila">
+        @for (butaca of filaGrupo.butacas; track butaca.id) {
+          <button
+            class="butaca"
+            [class]="butaca.tipo"
+            [class.ocupada]="ocupadas().has(butaca.id)"
+            [class.seleccionada]="seleccionadas().has(butaca.id)"
+            [disabled]="ocupadas().has(butaca.id)"
+            [style.grid-column]="butaca.numero"
+            (click)="toggleButaca(butaca)"
+            [title]="butaca.fila + butaca.numero"
+          >
+            {{ butaca.numero }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+</section>
 
   <section class="resumen-compra">
     <p>Butacas seleccionadas: {{ butacasSeleccionadas.length }}</p>

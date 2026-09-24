@@ -28,15 +28,14 @@ export class Detalle {
     private peliculasService: Peliculas,
     private resenasService: Resenas
   ) {
+    // Lee el parámetro 'id' de la URL, por ejemplo: /peliculas/12.
+    // paramMap.get('id') devuelve un string, así que lo convertimos a number
+    // para poder buscar la película correctamente en la base de datos.
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.cargarDatos(id);
   }
 
-    
-    // irAFunciones() {
-    //   document.getElementById('funciones-disponibles')?.scrollIntoView({ behavior: 'smooth' });
-    // }
-
+  
     // Obtiene en paralelo los datos de la película, sus reseñas y sus funciones.
   private async cargarDatos(id: number) {
     const [resultadoPelicula, resultadoResenas, resultadoFunciones] = await Promise.all([

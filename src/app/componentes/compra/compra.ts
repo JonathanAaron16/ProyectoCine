@@ -121,16 +121,29 @@ export class Compra implements OnInit, OnDestroy {
     const edad = (Date.now() - nacimiento.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
     return edad >= 18;
   }
-//cambiio
-  // readonly butacasPorFila = computed(() => {
-  //   const grupos = new Map<string, any[]>();
 
-  //   for (const butaca of this.butacas()) {
-  //     const fila = grupos.get(butaca.fila) ?? [];
-  //     fila.push(butaca);
-  //     grupos.set(butaca.fila, fila);
-  //   }
+  // Agrupa las butacas por fila para poder dibujar la sala en filas ordenadas.
+  get filasAgrupadas(): { fila: string; tipo: string; butacas: Butaca[] }[] {
+    // Mapear cada fila a su lista de butacas.
+    const mapa = new Map<string, Butaca[]>();
 
-  //   return Array.from(grupos.entries()).map(([fila, butacas]) => ({ fila, butacas }));
-  // });
+    for (const b of this.butacas()) {
+      if (!mapa.has(b.fila)) mapa.set(b.fila, []);
+      mapa.get(b.fila)!.push(b);
+    }
+
+    // Convertir el mapa en un array con la estructura que usa la vista.
+    return [...mapa.entries()].map(([fila, butacas]) => ({
+      fila,
+      tipo: butacas[0].tipo,
+      // Ordena las butacas dentro de la fila de menor a mayor número.
+      butacas: butacas.sort((a, b) => a.numero - b.numero),
+    }));
+  }
+
+  // Marca si una fila necesita un espacio extra visual antes de ella.
+  // Se usa para separar la fila accesible y el sector VIP del resto de la sala.
+  margenExtra(fila: string): boolean {
+    return fila === 'J' || fila === 'R';
+  }
 }
