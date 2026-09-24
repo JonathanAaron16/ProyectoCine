@@ -61,8 +61,8 @@ Completar `src/environments/environment.ts` con la URL y la anon key del proyect
 - [x] Cálculo de precio con recargo VIP
 - [x] Verificación de restricción de edad (+18)
 - [x] Confirmación de compra contra Supabase (con protección de doble venta)
-- [x] Generación de código QR
-- [x] Comprobante descargable en PDF
+- [ ] Generación de código QR
+- [ ] Comprobante descargable en PDF
 - [ ] Pulir mapa de butacas (espaciado visual de sectores) — en progreso
 
 ### ⬜ Split 8 — Candy Bar y combos
