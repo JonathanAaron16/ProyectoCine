@@ -100,29 +100,40 @@ Completar `src/environments/environment.ts` con la URL y la anon key del proyect
 
 ```
 src/app/
+│
 ├── componentes/
-│   ├── encabezado/
-│   ├── pie-pagina/
-│   ├── inicio/
-│   ├── peliculas/
-│   │   ├── listado/
-│   │   └── detalle/
-│   ├── login/
-│   ├── registro/
+│   ├── admin/
 │   ├── compra/
-│   └── admin/
-│       ├── peliculas-form/
-│       ├── salas/
-│       ├── salas-form/
-│       ├── funciones/
-│       └── funciones-form/
+│   ├── encabezado/
+│   ├── error/
+│   ├── inicio/
+│   ├── login/
+│   ├── peliculas/
+│   ├── registro/
+│   └── pie-pagina/
+│
 ├── guards/
 │   ├── admin-guard.ts
 │   └── form-guard.ts
+│
 ├── models/
-├── servicios/
-├── app.ts
-├── app.html
-├── app.routes.ts
-└── app.config.ts
+│   ├── pelicula.ts
+│   ├── usuario.ts
+│   ├── sala.ts
+│   ├── funcion.ts
+│   ├── butaca.ts
+│   ├── compra.ts
+│   ├── resena.ts
+│   └── ...
+│
+└── servicios/
+    ├── auth.ts
+    ├── compras.ts
+    ├── funciones.ts
+    ├── peliculas.ts
+    ├── resenas.ts
+    ├── salas.ts
+    ├── sesion.ts
+    ├── supabase-client.ts
+    └── usuarios.ts
 ```
