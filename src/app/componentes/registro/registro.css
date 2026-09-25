@@ -53,3 +53,9 @@
   font-size: 0.9rem;
   color: #666;
 }
+.error-campo {
+  display: block;
+  color: #e50914;
+  font-size: 0.78rem;
+  margin-top: 0.25rem;
+}

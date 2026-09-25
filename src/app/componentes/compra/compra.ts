@@ -3,6 +3,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Compras } from '../../servicios/compras';
 import { Sesion } from '../../servicios/sesion';
 import { Butaca } from '../../models/butaca';
+import * as QRCode from 'qrcode';
+import jsPDF from 'jspdf';
 
 const PRECIO_VIP_MULTIPLICADOR = 1.5;
 const INTERVALO_ACTUALIZACION_MS = 5000;
@@ -10,7 +12,7 @@ const INTERVALO_ACTUALIZACION_MS = 5000;
 @Component({
   selector: 'app-compra',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './compra.html',
   styleUrl: './compra.css'
 })
@@ -20,9 +22,15 @@ export class Compra implements OnInit, OnDestroy {
   ocupadas = signal<Set<number>>(new Set());
   seleccionadas = signal<Set<number>>(new Set());
   cargando = signal(true);
+  
+  confirmando = signal(false);
+  errorConfirmacion = signal('');
+  compraConfirmada = signal<any>(null);
+  qrDataUrl = signal('');
 
   private funcionId!: number;
   private intervalo?: ReturnType<typeof setInterval>;
+  private butacasCompradas: Butaca[] = [];
 
   // Inicializa la ruta, el servicio de compras y la sesión del usuario.
   constructor(
@@ -32,7 +40,7 @@ export class Compra implements OnInit, OnDestroy {
   ) {}
 
   // Carga la función, la sala y las butacas al iniciar la compra.
-  async ngOnInit() {
+ async ngOnInit() {
     this.funcionId = Number(this.route.snapshot.paramMap.get('funcionId'));
 
     const resultadoFuncion = await this.comprasService.obtenerFuncionConSala(this.funcionId);
@@ -60,12 +68,11 @@ export class Compra implements OnInit, OnDestroy {
     const resultado = await this.comprasService.obtenerButacasOcupadas(this.funcionId);
     if (resultado.data) {
       const ocupadasActuales = new Set(resultado.data.map((e: any) => e.butacaId));
-
+     
       // Si alguien más ocupó una butaca que yo tenía seleccionada, se la saco de mi selección
       const seleccionActualizada = new Set(
         [...this.seleccionadas()].filter(id => !ocupadasActuales.has(id))
       );
-
       this.ocupadas.set(ocupadasActuales);
       this.seleccionadas.set(seleccionActualizada);
     }
@@ -132,6 +139,10 @@ export class Compra implements OnInit, OnDestroy {
       mapa.get(b.fila)!.push(b);
     }
 
+    
+
+
+
     // Convertir el mapa en un array con la estructura que usa la vista.
     return [...mapa.entries()].map(([fila, butacas]) => ({
       fila,
@@ -146,4 +157,65 @@ export class Compra implements OnInit, OnDestroy {
   margenExtra(fila: string): boolean {
     return fila === 'J' || fila === 'R';
   }
+
+  async confirmarCompra() {
+    this.confirmando.set(true);
+    this.errorConfirmacion.set('');
+
+    this.butacasCompradas = this.butacasSeleccionadas;
+    const butacasParaComprar = this.butacasCompradas.map(b => ({ id: b.id, precio: this.precioButaca(b) }));
+
+    const resultado = await this.comprasService.confirmarCompra({
+      usuarioId: this.sesion.usuarioActual()?.id ?? null,
+      funcionId: this.funcionId,
+      butacas: butacasParaComprar,
+    });
+
+    this.confirmando.set(false);
+
+    if (resultado.error) {
+      this.errorConfirmacion.set('Una o más butacas ya fueron compradas por otra persona. Elegí de nuevo.');
+      await this.actualizarOcupadas();
+      return;
+    }
+
+    this.compraConfirmada.set(resultado.data);
+    this.qrDataUrl.set(await QRCode.toDataURL(resultado.data.codigoQr));
+  }
+
+  async descargarComprobante() {
+    const doc = new jsPDF();
+    const f = this.funcion();
+    const compra = this.compraConfirmada();
+
+    doc.setFontSize(18);
+    doc.text('Comprobante de compra - Cine App', 20, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Película: ${f.peliculas.nombre}`, 20, 35);
+    doc.text(`Función: ${f.fecha} - ${f.hora} - ${f.salas.nombre}`, 20, 43);
+    doc.text(`Modalidad: ${f.modalidad} (${f.idioma})`, 20, 51);
+
+    let y = 65;
+    doc.text('Butacas:', 20, y);
+    y += 8;
+    for (const b of this.butacasCompradas) {
+      doc.text(`  ${b.fila}${b.numero} (${b.tipo}) - $${this.precioButaca(b)}`, 20, y);
+      y += 7;
+    }
+
+    y += 5;
+    doc.text(`Total: $${compra.total}`, 20, y);
+
+    y += 15;
+    doc.addImage(this.qrDataUrl(), 'PNG', 20, y, 50, 50);
+    y += 58;
+    doc.setFontSize(9);
+    doc.text(`Código: ${compra.codigoQr}`, 20, y);
+
+    doc.save(`entrada-${compra.id}.pdf`);
+  }
 }
+
+
+

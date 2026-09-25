@@ -5,26 +5,51 @@
     <label>
       Correo electrónico
       <input type="email" [formField]="registroForm.email" />
+      @if (registroForm.email().touched() && registroForm.email().invalid()) {
+        @for (error of registroForm.email().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
       Contraseña
       <input type="password" [formField]="registroForm.password" />
+      @if (registroForm.password().touched() && registroForm.password().invalid()) {
+        @for (error of registroForm.password().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
       Nombre
       <input type="text" [formField]="registroForm.nombre" />
+      @if (registroForm.nombre().touched() && registroForm.nombre().invalid()) {
+        @for (error of registroForm.nombre().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
       Apellido
       <input type="text" [formField]="registroForm.apellido" />
+      @if (registroForm.apellido().touched() && registroForm.apellido().invalid()) {
+        @for (error of registroForm.apellido().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
       Fecha de nacimiento
       <input type="date" [formField]="registroForm.fechaNacimiento" />
+      @if (registroForm.fechaNacimiento().touched() && registroForm.fechaNacimiento().invalid()) {
+        @for (error of registroForm.fechaNacimiento().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
@@ -40,16 +65,31 @@
         <option value="O+">O+</option>
         <option value="O-">O-</option>
       </select>
+      @if (registroForm.tipoSangre().touched() && registroForm.tipoSangre().invalid()) {
+        @for (error of registroForm.tipoSangre().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
       Color de ojos
       <input type="text" [formField]="registroForm.colorOjos" placeholder="Ej: Marrón" />
+      @if (registroForm.colorOjos().touched() && registroForm.colorOjos().invalid()) {
+        @for (error of registroForm.colorOjos().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     <label>
       Días de vacaciones por año
       <input type="number" [formField]="registroForm.diasVacaciones" />
+      @if (registroForm.diasVacaciones().touched() && registroForm.diasVacaciones().invalid()) {
+        @for (error of registroForm.diasVacaciones().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
     </label>
 
     @if (errorRegistro()) {

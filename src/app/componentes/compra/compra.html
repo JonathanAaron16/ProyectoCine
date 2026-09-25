@@ -1,5 +1,15 @@
 @if (cargando()) {
   <p>Cargando...</p>
+} @else if (compraConfirmada(); as compra) {
+  <section class="confirmacion">
+    <h2>¡Compra confirmada! 🎉</h2>
+    <p>Presentá este código QR en el cine para ingresar y retirar tus entradas.</p>
+    <img [src]="qrDataUrl()" alt="Código QR de la compra" class="qr-imagen" />
+    <p class="codigo-texto">{{ compra.codigoQr }}</p>
+    <p class="total">Total pagado: ${{ compra.total }}</p>
+    <button (click)="descargarComprobante()" class="boton-confirmar">Descargar comprobante (PDF)</button>
+    <a routerLink="/" class="volver-inicio">Volver al inicio</a>
+  </section>
 } @else if (funcion(); as f) {
   <section class="resumen-funcion">
     <h1>{{ f.peliculas.nombre }}</h1>
@@ -18,7 +28,7 @@
     <span class="item"><span class="cuadro seleccionada"></span> Seleccionada</span>
   </section>
 
-  <section class="mapa-butacas">
+ <section class="mapa-butacas">
   @for (filaGrupo of filasAgrupadas; track filaGrupo.fila) {
     <div class="fila" [class.espacio-antes]="margenExtra(filaGrupo.fila)">
       <span class="etiqueta-fila">{{ filaGrupo.fila }}</span>
@@ -55,7 +65,13 @@
       </ul>
     }
 
-    <button class="boton-confirmar" [disabled]="!puedeComprar">Continuar</button>
+    @if (errorConfirmacion()) {
+      <p class="error-general">{{ errorConfirmacion() }}</p>
+    }
+
+    <button class="boton-confirmar" [disabled]="!puedeComprar || confirmando()" (click)="confirmarCompra()">
+      {{ confirmando() ? 'Confirmando...' : 'Confirmar compra' }}
+    </button>
   </section>
 } @else {
   <p>Función no encontrada.</p>

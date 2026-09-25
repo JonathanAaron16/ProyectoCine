@@ -173,3 +173,33 @@
   background: #ccc;
   cursor: not-allowed;
 }
+
+.confirmacion {
+  max-width: 400px;
+  margin: 3rem auto;
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.qr-imagen {
+  width: 200px;
+  height: 200px;
+  margin: 1.5rem auto;
+  display: block;
+}
+
+.codigo-texto {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #999;
+  word-break: break-all;
+}
+
+.volver-inicio {
+  display: block;
+  margin-top: 1rem;
+  color: #666;
+  text-decoration: none;
+}
