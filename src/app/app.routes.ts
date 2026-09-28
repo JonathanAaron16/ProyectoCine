@@ -67,6 +67,28 @@ export const routes: Routes = [
   canDeactivate: [formGuard],
   loadComponent: () => import('./componentes/admin/funciones-form/funciones-form').then(m => m.FuncionesForm)
 },
+{
+  path: 'admin/productos',
+  canActivate: [adminGuard],
+  loadComponent: () => import('./componentes/admin/productos/productos').then(m => m.ProductosComponent)
+},
+{
+  path: 'admin/productos/nuevo',
+  canActivate: [adminGuard],
+  canDeactivate: [formGuard],
+  loadComponent: () => import('./componentes/admin/productos-form/productos-form').then(m => m.ProductosForm)
+},
+{
+  path: 'admin/cupones',
+  canActivate: [adminGuard],
+  loadComponent: () => import('./componentes/admin/cupones/cupones').then(m => m.CuponesComponent)
+},
+{
+  path: 'admin/cupones/nuevo',
+  canActivate: [adminGuard],
+  canDeactivate: [formGuard],
+  loadComponent: () => import('./componentes/admin/cupones-form/cupones-form').then(m => m.CuponesForm)
+},
   {
     path: '**',
     loadComponent: () => import('./componentes/error/error').then(m => m.Error)

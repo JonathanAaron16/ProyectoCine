@@ -1,0 +1,37 @@
+<section class="panel-admin">
+  <div class="encabezado-panel">
+    <h1>Productos (Candy Bar)</h1>
+    <a routerLink="/admin/productos/nuevo" class="boton-agregar">+ Nuevo producto</a>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Combo</th>
+          <th>Disponible</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of productos(); track p.id) {
+          <tr>
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.categorias_productos?.nombre }}</td>
+            <td>${{ p.precio }}</td>
+            <td>{{ p.esCombo ? 'Sí' : 'No' }}</td>
+            <td>{{ p.disponible ? 'Sí' : 'No' }}</td>
+            <td><button (click)="eliminar(p.id)" class="boton-eliminar">Eliminar</button></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6">No hay productos cargados.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

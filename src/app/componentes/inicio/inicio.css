@@ -13,14 +13,26 @@
   font-size: 2rem;
 }
 
+.destacadas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .destacadas h2 {
   margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
 }
 
 .grilla {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 200px));
+  justify-content: center;
+  align-items: start;
   gap: 1.5rem;
+  width: min(100%, 980px);
+  margin: 0 auto;
 }
 
 .tarjeta {
@@ -28,6 +40,8 @@
   text-decoration: none;
   color: inherit;
   display: block;
+  width: 100%;
+  max-width: 200px;
 }
 
 .tarjeta img {

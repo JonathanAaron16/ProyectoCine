@@ -52,27 +52,89 @@
     </div>
   }
 </section>
+<section class="candy-bar">
+  <h3>Candy Bar</h3>
+  <div class="grilla-productos">
+    @for (producto of productosDisponibles(); track producto.id) {
+      <div class="producto-item">
+        <img [src]="producto.imagen" [alt]="producto.nombre" />
+        <p class="nombre-producto">{{ producto.nombre }}</p>
+        <p class="precio-producto">${{ producto.precio }}</p>
+
+        <div class="controles-cantidad">
+          <button type="button" (click)="quitarProducto(producto.id)">-</button>
+          <span>{{ carrito().get(producto.id) ?? 0 }}</span>
+          <button type="button" (click)="agregarProducto(producto.id)">+</button>
+        </div>
+      </div>
+    } @empty {
+      <p>No hay productos disponibles.</p>
+    }
+  </div>
+</section>
 
   <section class="resumen-compra">
-    <p>Butacas seleccionadas: {{ butacasSeleccionadas.length }}</p>
-    <p class="total">Total: ${{ total }}</p>
+  <p>Butacas seleccionadas: {{ butacasSeleccionadas.length }}</p>
 
-    @if (butacasSeleccionadas.length > 0) {
-      <ul class="detalle-butacas">
-        @for (b of butacasSeleccionadas; track b.id) {
-          <li>{{ b.fila }}{{ b.numero }} ({{ b.tipo }}) — ${{ precioButaca(b) }}</li>
-        }
-      </ul>
+  @if (butacasSeleccionadas.length > 0) {
+    <ul class="detalle-butacas">
+      @for (b of butacasSeleccionadas; track b.id) {
+        <li>{{ b.fila }}{{ b.numero }} <span class="tipo-butaca">({{ b.tipo }})</span> — ${{ precioButaca(b) }}</li>
+      }
+    </ul>
+  }
+
+  @if (itemsCarrito.length > 0) {
+    <p class="subtitulo-resumen">Candy Bar</p>
+    <ul class="detalle-butacas">
+      @for (item of itemsCarrito; track item.producto.id) {
+        <li>{{ item.cantidad }}x {{ item.producto.nombre }} — ${{ item.producto.precio * item.cantidad }}</li>
+      }
+    </ul>
+  }
+
+  @if (cuponBienvenida() && !cuponAplicado()) {
+    <div class="banner-cupon">
+      🎁 Tenés un cupón de bienvenida: {{ cuponBienvenida()!.porcentajeDescuento }}% de descuento
+      <button type="button" (click)="aplicarCupon(cuponBienvenida()!.codigo)">Aplicar</button>
+    </div>
+  }
+
+  <div class="cupon-caja">
+    @if (cuponAplicado(); as c) {
+      <p class="cupon-ok">
+        Cupón {{ c.codigo }} aplicado ({{ c.porcentajeDescuento }}%)
+        <button type="button" (click)="quitarCupon()">Quitar</button>
+      </p>
+    } @else {
+      <input
+        type="text"
+        placeholder="Código de cupón"
+        [value]="codigoCupon()"
+        (input)="codigoCupon.set($any($event.target).value)"
+      />
+      <button type="button" (click)="aplicarCupon()">Aplicar</button>
     }
-
-    @if (errorConfirmacion()) {
-      <p class="error-general">{{ errorConfirmacion() }}</p>
+    @if (errorCupon()) {
+      <small class="error-campo">{{ errorCupon() }}</small>
     }
+  </div>
 
-    <button class="boton-confirmar" [disabled]="!puedeComprar || confirmando()" (click)="confirmarCompra()">
-      {{ confirmando() ? 'Confirmando...' : 'Confirmar compra' }}
-    </button>
-  </section>
+  @if (cuponAplicado()) {
+    <p class="linea-resumen">Subtotal: ${{ subtotal }}</p>
+    <p class="linea-resumen descuento">Descuento: -${{ descuento }}</p>
+  }
+
+  <p class="total">Total: ${{ total }}</p>
+
+  @if (errorConfirmacion()) {
+    <p class="error-general">{{ errorConfirmacion() }}</p>
+  }
+
+  <button class="boton-confirmar" [disabled]="!puedeComprar || confirmando()" (click)="confirmarCompra()">
+    {{ confirmando() ? 'Confirmando...' : 'Confirmar compra' }}
+  </button>
+</section>
 } @else {
   <p>Función no encontrada.</p>
 }

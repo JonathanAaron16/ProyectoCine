@@ -7,7 +7,7 @@ import { Funciones } from '../../../servicios/funciones';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './funciones.html',
-  styleUrl: './funciones.css'
+  styleUrl: '../admin.css'
 })
 export class FuncionesComponent implements OnInit {
   funciones = signal<any[]>([]);

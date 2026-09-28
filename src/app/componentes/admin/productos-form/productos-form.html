@@ -1,0 +1,73 @@
+
+<section class="contenedor-form">
+  <h2>Nuevo producto</h2>
+
+  <div class="categoria-rapida">
+    <input type="text" [value]="nuevaCategoria()" (input)="nuevaCategoria.set($any($event.target).value)" placeholder="Nueva categoría" />
+    <button type="button" (click)="agregarCategoria()">+ Agregar categoría</button>
+  </div>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Nombre
+      <input type="text" [formField]="productoForm.nombre" />
+    </label>
+
+    <label>
+      Descripción
+      <textarea [formField]="productoForm.descripcion"></textarea>
+    </label>
+
+    <label>
+      Precio
+      <input type="number" [formField]="productoForm.precio" />
+    </label>
+
+    <label>
+      Categoría
+      <select [formField]="productoForm.categoriaId">
+        <option [value]="0">Seleccionar...</option>
+        @for (c of categorias(); track c.id) {
+          <option [value]="c.id">{{ c.nombre }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Imagen (URL)
+      <input type="text" [formField]="productoForm.imagen" />
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="productoForm.disponible" />
+      Disponible
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="productoForm.esCombo" />
+      Es un combo
+    </label>
+
+    @if (productoForm.esCombo().value()) {
+      <fieldset>
+        <legend>Productos incluidos en el combo</legend>
+        @for (p of productosDisponibles(); track p.id) {
+          <label class="checkbox">
+            <input
+              type="checkbox"
+             [checked]="combosSeleccionados().some(c => c.productoId === p.id)"
+              (change)="toggleProductoCombo(p.id)"
+            />
+            {{ p.nombre }}
+          </label>
+        }
+      </fieldset>
+    }
+
+    @if (errorGuardado()) {
+      <p class="error-general">{{ errorGuardado() }}</p>
+    }
+
+    <button type="submit">Crear producto</button>
+  </form>
+</section>

@@ -1,0 +1,44 @@
+<section class="panel-admin">
+  <div class="encabezado-panel">
+    <h1>Cupones</h1>
+    <a routerLink="/admin/cupones/nuevo" class="boton-agregar">+ Nuevo cupón</a>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Tipo</th>
+          <th>Descuento (%)</th>
+          <th>Vence</th>
+          <th>Uso único</th>
+          <th>Activo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of cupones(); track c.id) {
+          <tr>
+            <td>{{ c.codigo }}</td>
+            <td>{{ c.tipo }}</td>
+            <td>
+              <input type="number" min="1" max="100" [value]="c.porcentajeDescuento" #pct class="input-pct" />
+              <button (click)="guardarPorcentaje(c.id, +pct.value)">Guardar</button>
+            </td>
+            <td>{{ c.fechaVencimiento ?? '—' }}</td>
+            <td>{{ c.usoUnico ? 'Sí' : 'No' }}</td>
+            <td>
+              <button (click)="alternarActivo(c)">{{ c.activo ? 'Desactivar' : 'Activar' }}</button>
+            </td>
+            <td><button (click)="eliminar(c.id)" class="boton-eliminar">Eliminar</button></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7">No hay cupones cargados.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

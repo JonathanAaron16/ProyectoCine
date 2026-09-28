@@ -3,9 +3,13 @@ export interface Producto {
   nombre: string;
   descripcion: string;
   precio: number;
-  categoria: string;
+  categoriaId: number;   
   imagen: string;
   disponible: boolean;
   esCombo: boolean;
-  productosIncluidos?: number[];   // ids de productos si esCombo = true
+}
+
+export interface CategoriaProducto {
+  id: number;
+  nombre: string;
 }

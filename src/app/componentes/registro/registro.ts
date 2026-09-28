@@ -4,7 +4,7 @@ import { RouterLink, Router } from '@angular/router';
 import { RegistroData } from '../../models/registro-data';
 import { Auth } from '../../servicios/auth';
 import { Usuarios } from '../../servicios/usuarios';
-import { Validators } from '@angular/forms';
+
 
 @Component({
   imports: [FormField, RouterLink],
@@ -43,7 +43,9 @@ export class Registro {
     required(schemaPath.fechaNacimiento, { message: 'La fecha de nacimiento es obligatoria' });
     required(schemaPath.tipoSangre, { message: 'El tipo de sangre es obligatorio' });
     required(schemaPath.colorOjos, { message: 'El color de ojos es obligatorio' });
+
     required(schemaPath.diasVacaciones, { message: 'Ingresá los días de vacaciones' });
+    
     min(schemaPath.diasVacaciones, 0, { message: 'No puede ser negativo' });
     max(schemaPath.diasVacaciones, 365, { message: 'Valor demasiado alto' });
   });

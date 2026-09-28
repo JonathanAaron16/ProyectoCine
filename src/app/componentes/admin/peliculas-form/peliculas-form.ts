@@ -16,7 +16,7 @@ interface Genero {
   standalone: true,
   imports: [FormField],
   templateUrl: './peliculas-form.html',
-  styleUrl: './peliculas-form.css'
+  styleUrl: '../admin.css'
 })
 export class PeliculasForm implements OnInit, Iform {
   // Inicializa la ruta, el navegador y el servicio de películas.

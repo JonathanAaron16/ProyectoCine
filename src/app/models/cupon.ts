@@ -2,7 +2,8 @@ export interface Cupon {
   id: number;
   codigo: string;
   porcentajeDescuento: number;
-  tipo: 'primeraCompra' | 'mayoresDe50' | 'general';
+  tipo: 'primeraCompra' | 'mayores50' | 'general';
   activo: boolean;
-  fechaVencimiento?: string;
+  fechaVencimiento?: string | null;
+  usoUnico: boolean;
 }

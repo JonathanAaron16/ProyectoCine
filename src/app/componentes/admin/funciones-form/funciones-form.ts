@@ -10,7 +10,7 @@ import { Iform } from '../../../models/IForm';
   standalone: true,
   imports: [FormField],
   templateUrl: './funciones-form.html',
-  styleUrl: './funciones-form.css'
+  styleUrl: '../admin.css'
 })
 export class FuncionesForm implements OnInit, Iform {
   peliculas = signal<{ id: number; nombre: string; duracionMinutos: number }[]>([]);

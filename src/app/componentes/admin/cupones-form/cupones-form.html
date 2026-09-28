@@ -1,0 +1,55 @@
+<section class="contenedor-form">
+  <h2>Nuevo cupón</h2>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Código
+      <input type="text" [formField]="cuponForm.codigo" placeholder="Ej: VERANO15" />
+      @if (cuponForm.codigo().touched() && cuponForm.codigo().invalid()) {
+        @for (error of cuponForm.codigo().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
+    </label>
+
+    <label>
+      Porcentaje de descuento
+      <input type="number" [formField]="cuponForm.porcentajeDescuento" />
+      @if (cuponForm.porcentajeDescuento().touched() && cuponForm.porcentajeDescuento().invalid()) {
+        @for (error of cuponForm.porcentajeDescuento().errors(); track error.kind) {
+          <small class="error-campo">{{ error.message }}</small>
+        }
+      }
+    </label>
+
+    <label>
+      Tipo de cupón
+      <select [formField]="cuponForm.tipo">
+        <option value="general">General (cualquiera puede usarlo)</option>
+        <option value="primeraCompra">Primera compra (usuario registrado)</option>
+        <option value="mayores50">Mayores de 50 años</option>
+      </select>
+    </label>
+
+    <label>
+      Fecha de vencimiento (opcional)
+      <input type="date" [formField]="cuponForm.fechaVencimiento" />
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="cuponForm.usoUnico" />
+      Uso único por usuario
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="cuponForm.activo" />
+      Activo
+    </label>
+
+    @if (errorGuardado()) {
+      <p class="error-general">{{ errorGuardado() }}</p>
+    }
+
+    <button type="submit">Crear cupón</button>
+  </form>
+</section>

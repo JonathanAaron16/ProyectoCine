@@ -50,3 +50,129 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.contenedor-form {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.contenedor-form h2 {
+  margin: 0 0 1.25rem;
+  color: #111;
+}
+
+.contenedor-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contenedor-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.contenedor-form input,
+.contenedor-form textarea,
+.contenedor-form select {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background: #fff;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.contenedor-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contenedor-form .checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 400;
+}
+
+.contenedor-form input[type='checkbox'] {
+  width: auto;
+  margin: 0;
+}
+
+.categoria-rapida {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.categoria-rapida input {
+  flex: 1;
+}
+
+.categoria-rapida button,
+.contenedor-form button[type='submit'] {
+  border: none;
+  border-radius: 8px;
+  background: #e50914;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.categoria-rapida button {
+  padding: 0.7rem 1rem;
+}
+
+.contenedor-form button[type='submit'] {
+  width: fit-content;
+  padding: 0.8rem 1.3rem;
+  margin-top: 0.4rem;
+}
+
+.contenedor-form button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contenedor-form fieldset {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.contenedor-form legend {
+  padding: 0 0.35rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.error-general {
+  margin: 0;
+  color: #e50914;
+  font-weight: 600;
+}
+
+.info {
+  margin: 0;
+  color: #666;
+  font-size: 0.92rem;
+}
+.input-pct {
+  width: 60px;
+  padding: 0.3rem;
+  margin-right: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

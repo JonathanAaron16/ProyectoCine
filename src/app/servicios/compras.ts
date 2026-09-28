@@ -28,13 +28,25 @@ export class Compras {
   usuarioId: string | null;
   funcionId: number;
   butacas: { id: number; precio: number }[];
+  productos: { productoId: number; cantidad: number; precioUnitario: number }[];
+  cuponId: number | null;
+  descuento: number;
 }) {
   const codigoQr = crypto.randomUUID();
-  const total = datos.butacas.reduce((acc, b) => acc + b.precio, 0);
+  const totalButacas = datos.butacas.reduce((acc, b) => acc + b.precio, 0);
+  const totalProductos = datos.productos.reduce((acc, p) => acc + p.precioUnitario * p.cantidad, 0);
+  const total = Math.max(totalButacas + totalProductos - datos.descuento, 0);
 
   const { data: compra, error: errorCompra } = await supabase
     .from('compras')
-    .insert([{ usuarioId: datos.usuarioId, total, codigoQr, estado: 'confirmada' }])
+    .insert([{
+      usuarioId: datos.usuarioId,
+      total,
+      codigoQr,
+      estado: 'confirmada',
+      cuponId: datos.cuponId,
+      descuento: datos.descuento,
+    }])
     .select()
     .single();
 
@@ -52,9 +64,26 @@ export class Compras {
   const { error: errorEntradas } = await supabase.from('entradas').insert(entradas);
 
   if (errorEntradas) {
-    // Alguien compró alguna de estas butacas justo antes que vos (lo frena el unique constraint)
     await supabase.from('compras').delete().eq('id', compra.id);
     return { data: null, error: errorEntradas };
+  }
+
+  if (datos.productos.length > 0) {
+    const productosComprados = datos.productos.map(p => ({
+      compraId: compra.id,
+      productoId: p.productoId,
+      cantidad: p.cantidad,
+      precioUnitario: p.precioUnitario,
+    }));
+    await supabase.from('productos_comprados').insert(productosComprados);
+  }
+
+  if (datos.cuponId && datos.usuarioId) {
+    await supabase.from('cupones_usados').insert([{
+      cuponId: datos.cuponId,
+      usuarioId: datos.usuarioId,
+      compraId: compra.id,
+    }]);
   }
 
   return { data: compra, error: null };

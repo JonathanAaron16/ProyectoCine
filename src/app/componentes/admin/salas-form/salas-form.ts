@@ -8,7 +8,7 @@ import { Salas } from '../../../servicios/salas';
   standalone: true,
   imports: [FormField],
   templateUrl: './salas-form.html',
-  styleUrl: './salas-form.css'
+  styleUrl: '../admin.css'
 })
 export class SalasForm {
   salaModel = signal({ nombre: '' });
