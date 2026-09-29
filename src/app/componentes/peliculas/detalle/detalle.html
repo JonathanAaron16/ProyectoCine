@@ -74,22 +74,54 @@
   
 
   <section class="resenas">
-    <h2>Reseñas ⭐ {{ promedioCalificacion }} / 5</h2>
+  <h2>Reseñas ⭐ {{ promedioCalificacion }} / 5</h2>
 
-    @for (resena of resenas(); track resena.id) {
-      <article class="resena">
-        <div class="estrellas">
-          @for (n of [1,2,3,4,5]; track n) {
-            <span [class.activa]="n <= resena.calificacion">★</span>
-          }
-        </div>
-        <p>{{ resena.comentario }}</p>
-        <small>{{ resena.fecha | date:'dd/MM/yyyy' }}</small>
-      </article>
-    } @empty {
-      <p>Todavía no hay reseñas para esta película.</p>
-    }
-  </section>
+  @if (sesion.usuarioActual() && puedeCalificar()) {
+    <form class="form-resena" (submit)="enviarResena(); $event.preventDefault()">
+      <label>
+        Tu calificación
+        <select [formField]="calificacionForm.calificacion">
+          <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+          <option value="4">⭐⭐⭐⭐ (4)</option>
+          <option value="3">⭐⭐⭐ (3)</option>
+          <option value="2">⭐⭐ (2)</option>
+          <option value="1">⭐ (1)</option>
+        </select>
+      </label>
+
+      <label>
+        Comentario
+        <textarea [formField]="calificacionForm.comentario" placeholder="¿Qué te pareció la película?"></textarea>
+      </label>
+
+      @if (errorResena()) {
+        <p class="error-general">{{ errorResena() }}</p>
+      }
+
+      <button type="submit" [disabled]="enviandoResena()">
+        {{ enviandoResena() ? 'Publicando...' : 'Publicar reseña' }}
+      </button>
+    </form>
+  } @else if (sesion.usuarioActual()) {
+    <p class="aviso-login">Comprá una entrada para esta película para poder dejar tu reseña.</p>
+  } @else {
+    <p class="aviso-login">Iniciá sesión para dejar tu reseña.</p>
+  }
+
+  @for (resena of resenas(); track resena.id) {
+    <article class="resena">
+      <div class="estrellas">
+        @for (n of [1,2,3,4,5]; track n) {
+          <span [class.activa]="n <= +resena.calificacion">★</span>
+        }
+      </div>
+      <p>{{ resena.comentario }}</p>
+      <small>{{ resena.fecha | date:'dd/MM/yyyy' }}</small>
+    </article>
+  } @empty {
+    <p>Todavía no hay reseñas para esta película.</p>
+  }
+</section>
 } @else if (!cargando()) {
   <p class="no-encontrada">Película no encontrada.</p>
 }

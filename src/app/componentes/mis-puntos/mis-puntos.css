@@ -1,0 +1,72 @@
+.resumen-puntos {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.puntos-actuales {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e50914;
+}
+
+.grilla-recompensas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.recompensa-item {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.recompensa-item h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+}
+
+.costo-puntos {
+  font-weight: bold;
+  color: #e50914;
+  margin: 0.5rem 0;
+}
+
+.recompensa-item button {
+  width: 100%;
+  padding: 0.5rem;
+  background: #e50914;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.recompensa-item button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.mensaje-exito {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.canje-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.85rem;
+}
+
+.codigo-canje {
+  font-family: monospace;
+  color: #999;
+}

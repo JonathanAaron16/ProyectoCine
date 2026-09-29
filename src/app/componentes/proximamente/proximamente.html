@@ -1,0 +1,27 @@
+<section class="cabecera-seccion">
+  <h1>Próximamente</h1>
+  <p>Los estrenos que se vienen en las próximas semanas</p>
+</section>
+
+@if (cargando()) {
+  <p>Cargando...</p>
+} @else {
+  <div class="grilla-proximamente">
+    @for (pelicula of peliculas(); track pelicula.id) {
+      <div class="tarjeta-proximo">
+        <img [src]="pelicula.imagen" [alt]="pelicula.nombre" />
+        <h3>{{ pelicula.nombre }}</h3>
+        <p class="fecha-estreno">Estreno: {{ pelicula.fechaEstreno }}</p>
+        <p class="generos">{{ pelicula.generos.join(', ') }}</p>
+
+        @if (sesion.usuarioActual()) {
+          <button (click)="toggleAlerta(pelicula.id)" class="boton-alerta" [class.activa]="misAlertas().has(pelicula.id)">
+            {{ misAlertas().has(pelicula.id) ? '🔔 Alerta activada' : '🔕 Avisarme del estreno' }}
+          </button>
+        }
+      </div>
+    } @empty {
+      <p>No hay estrenos programados por el momento.</p>
+    }
+  </div>
+}

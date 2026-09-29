@@ -1,0 +1,61 @@
+.cabecera-seccion {
+  margin-bottom: 1.5rem;
+}
+
+.cabecera-seccion p {
+  color: #666;
+}
+
+.grilla-proximamente {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.tarjeta-proximo {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+.tarjeta-proximo img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
+
+.tarjeta-proximo h3 {
+  margin: 0.6rem 0.75rem 0.2rem;
+  font-size: 0.95rem;
+}
+
+.fecha-estreno {
+  margin: 0 0.75rem;
+  font-size: 0.85rem;
+  color: #e50914;
+  font-weight: 600;
+}
+
+.generos {
+  margin: 0.2rem 0.75rem 0.6rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.boton-alerta {
+  display: block;
+  margin: 0 0.75rem;
+  width: calc(100% - 1.5rem);
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.boton-alerta.activa {
+  background: #fff8e1;
+  border-color: #f5c518;
+}

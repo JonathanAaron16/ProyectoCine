@@ -69,4 +69,14 @@ export class Peliculas {
       .delete()
       .eq('id', id);
   }
+
+  obtenerProximamente() {
+  return supabase
+    .from('peliculas')
+    .select('*, peliculas_generos(generos(id, nombre))')
+    .eq('publicada', false)
+    .not('fechaEstreno', 'is', null)
+    .order('fechaEstreno');
+}
+
 }

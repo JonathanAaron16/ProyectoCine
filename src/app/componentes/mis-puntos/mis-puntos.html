@@ -1,0 +1,51 @@
+@if (cargando()) {
+  <p>Cargando...</p>
+} @else if (sesion.usuarioActual(); as usuario) {
+  <section class="resumen-puntos">
+    <h1>Mis puntos</h1>
+    <p class="puntos-actuales">{{ usuario.puntos ?? 0 }} puntos</p>
+  </section>
+
+  @if (mensajeCanje()) {
+    <p class="mensaje-exito">{{ mensajeCanje() }}</p>
+  }
+  @if (errorCanje()) {
+    <p class="error-general">{{ errorCanje() }}</p>
+  }
+
+  <section class="recompensas">
+    <h2>Recompensas disponibles</h2>
+    <div class="grilla-recompensas">
+      @for (r of recompensas(); track r.id) {
+        <div class="recompensa-item">
+          <h3>{{ r.nombre }}</h3>
+          <p>{{ r.descripcion }}</p>
+          <p class="costo-puntos">{{ r.puntosNecesarios }} puntos</p>
+          <button
+            [disabled]="(usuario.puntos ?? 0) < r.puntosNecesarios"
+            (click)="canjear(r.id)"
+          >
+            Canjear
+          </button>
+        </div>
+      } @empty {
+        <p>No hay recompensas disponibles.</p>
+      }
+    </div>
+  </section>
+
+  <section class="historial">
+    <h2>Historial de canjes</h2>
+    @for (canje of historial(); track canje.id) {
+      <div class="canje-item">
+        <span>{{ canje.recompensas.nombre }} — {{ canje.puntosUtilizados }} puntos</span>
+        <span class="codigo-canje">{{ canje.codigoCanje }}</span>
+        <span class="fecha-canje">{{ canje.fecha | date:'dd/MM/yyyy' }}</span>
+      </div>
+    } @empty {
+      <p>Todavía no canjeaste ninguna recompensa.</p>
+    }
+  </section>
+} @else {
+  <p>Iniciá sesión para ver tus puntos y recompensas.</p>
+}

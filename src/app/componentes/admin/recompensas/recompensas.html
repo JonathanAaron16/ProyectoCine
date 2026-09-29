@@ -1,0 +1,38 @@
+<section class="panel-admin">
+  <div class="encabezado-panel">
+    <h1>Recompensas</h1>
+    <a routerLink="/admin/recompensas/nueva" class="boton-agregar">+ Nueva recompensa</a>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Puntos necesarios</th>
+          <th>Activa</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of recompensas(); track r.id) {
+          <tr>
+            <td>{{ r.nombre }}</td>
+            <td>{{ r.tipo }}</td>
+            <td>
+              <input type="number" min="1" [value]="r.puntosNecesarios" #pts class="input-pct" />
+              <button (click)="guardarPuntos(r.id, +pts.value)">Guardar</button>
+            </td>
+            <td><button (click)="alternarActivo(r)">{{ r.activo ? 'Desactivar' : 'Activar' }}</button></td>
+            <td><button (click)="eliminar(r.id)" class="boton-eliminar">Eliminar</button></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5">No hay recompensas cargadas.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

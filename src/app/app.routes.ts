@@ -89,6 +89,29 @@ export const routes: Routes = [
   canDeactivate: [formGuard],
   loadComponent: () => import('./componentes/admin/cupones-form/cupones-form').then(m => m.CuponesForm)
 },
+{
+  path: 'mis-puntos',
+  loadComponent: () => import('./componentes/mis-puntos/mis-puntos').then(m => m.MisPuntos)
+},
+{
+  path: 'admin/recompensas',
+  canActivate: [adminGuard],
+  loadComponent: () => import('./componentes/admin/recompensas/recompensas').then(m => m.RecompensasComponent)
+},
+{
+  path: 'admin/recompensas/nueva',
+  canActivate: [adminGuard],
+  canDeactivate: [formGuard],
+  loadComponent: () => import('./componentes/admin/recompensas-form/recompensas-form').then(m => m.RecompensasForm)
+},
+{
+  path: 'proximamente',
+  loadComponent: () => import('./componentes/proximamente/proximamente').then(m => m.Proximamente)
+},
+{
+  path: 'mis-peliculas',
+  loadComponent: () => import('./componentes/mis-peliculas/mis-peliculas').then(m => m.MisPeliculas)
+},
   {
     path: '**',
     loadComponent: () => import('./componentes/error/error').then(m => m.Error)

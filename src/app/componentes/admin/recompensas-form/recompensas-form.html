@@ -1,0 +1,39 @@
+<section class="contenedor-form">
+  <h2>Nueva recompensa</h2>
+
+  <form (submit)="onSubmit($event)">
+    <label>
+      Nombre
+      <input type="text" [formField]="recompensaForm.nombre" />
+    </label>
+
+    <label>
+      Descripción
+      <textarea [formField]="recompensaForm.descripcion"></textarea>
+    </label>
+
+    <label>
+      Puntos necesarios
+      <input type="number" [formField]="recompensaForm.puntosNecesarios" />
+    </label>
+
+    <label>
+      Tipo
+      <select [formField]="recompensaForm.tipo">
+        <option value="producto">Producto del Candy Bar</option>
+        <option value="entrada">Entrada gratuita</option>
+      </select>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [formField]="recompensaForm.activo" />
+      Activa
+    </label>
+
+    @if (errorGuardado()) {
+      <p class="error-general">{{ errorGuardado() }}</p>
+    }
+
+    <button type="submit">Crear recompensa</button>
+  </form>
+</section>

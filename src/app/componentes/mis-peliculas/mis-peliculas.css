@@ -1,0 +1,44 @@
+.grilla-vistas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.tarjeta-vista {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 0.75rem;
+}
+
+.tarjeta-vista img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
+
+.tarjeta-vista h3 {
+  margin: 0.5rem 0.6rem 0.2rem;
+  font-size: 0.9rem;
+}
+
+.fecha-vista {
+  margin: 0 0.6rem;
+  font-size: 0.78rem;
+  color: #999;
+}
+
+.mi-calificacion {
+  margin: 0.3rem 0.6rem 0;
+  font-size: 0.8rem;
+  color: #f5a623;
+  font-weight: 600;
+}
+
+.sin-calificar {
+  margin: 0.3rem 0.6rem 0;
+  font-size: 0.78rem;
+  color: #ccc;
+}

@@ -85,8 +85,31 @@ export class Compras {
       compraId: compra.id,
     }]);
   }
+  if (datos.usuarioId) {
+  await supabase.rpc('sumar_puntos', { usuario_id: datos.usuarioId, cantidad: Math.floor(total) });
+    }
 
-  return { data: compra, error: null };
+    return { data: compra, error: null };
+
+  
 }
+ async usuarioVioLaPelicula(usuarioId: string, peliculaId: number): Promise<boolean> {
+  const resultado = await supabase
+    .from('entradas')
+    .select('id, funciones!inner(peliculaId), compras!inner(usuarioId)')
+    .eq('funciones.peliculaId', peliculaId)
+    .eq('compras.usuarioId', usuarioId);
+
+  console.log('Verificación de vista:', resultado);   // 👈 agregalo temporalmente
+
+  return (resultado.data?.length ?? 0) > 0;
+}
+ obtenerHistorialUsuario(usuarioId: string) {
+  return supabase
+    .from('entradas')
+    .select('funciones(fecha, peliculas(id, nombre, imagen)), compras!inner(usuarioId, fecha)')
+    .eq('compras.usuarioId', usuarioId);
+}
+
 
 }

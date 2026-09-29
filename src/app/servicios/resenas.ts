@@ -18,4 +18,9 @@ export class Resenas {
   crear(resena: Omit<Resena, 'id' | 'fecha'>) {
     return supabase.from('resenas').insert([resena]);
   }
+  
+  obtenerPorUsuario(usuarioId: string) {
+  return supabase.from('resenas').select('*').eq('usuarioId', usuarioId);
+}
+
 }

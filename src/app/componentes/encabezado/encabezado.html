@@ -4,8 +4,11 @@
   <nav class="nav">
     <a routerLink="/" routerLinkActive="activo" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
     <a routerLink="/peliculas" routerLinkActive="activo">Películas</a>
+    <a routerLink="/proximamente" routerLinkActive="activo">Próximamente</a>
 
     @if (sesion.usuarioActual(); as usuario) {
+      <a routerLink="/mis-puntos" routerLinkActive="activo">Mis puntos</a>
+      <a routerLink="/mis-peliculas" routerLinkActive="activo">Mis películas</a>
       @if (sesion.esAdmin()) {
         <a routerLink="/admin" routerLinkActive="activo">Admin</a>
       }

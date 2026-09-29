@@ -1,0 +1,27 @@
+
+<section class="cabecera-seccion">
+  <h1>Mis películas</h1>
+</section>
+
+@if (cargando()) {
+  <p>Cargando...</p>
+} @else if (sesion.usuarioActual()) {
+  <div class="grilla-vistas">
+    @for (p of peliculasVistas(); track p.id) {
+      <a [routerLink]="['/peliculas', p.id]" class="tarjeta-vista">
+        <img [src]="p.imagen" [alt]="p.nombre" />
+        <h3>{{ p.nombre }}</h3>
+        <p class="fecha-vista">Vista el {{ p.fecha }}</p>
+        @if (p.miCalificacion) {
+          <p class="mi-calificacion">Mi calificación: {{ p.miCalificacion }} ⭐</p>
+        } @else {
+          <p class="sin-calificar">Todavía no la calificaste</p>
+        }
+      </a>
+    } @empty {
+      <p>Todavía no viste ninguna película. ¡Comprá tu primera entrada!</p>
+    }
+  </div>
+} @else {
+  <p>Iniciá sesión para ver tu historial.</p>
+}
