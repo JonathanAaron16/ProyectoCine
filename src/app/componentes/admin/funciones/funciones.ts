@@ -23,6 +23,17 @@ export class FuncionesComponent implements OnInit {
       this.cargando.set(false);
     });
   }
+  // Calcula la hora de finalización de una función basada en su hora de inicio y la duración de la película.
+  horaFin(funcion: any): string {
+    const [horas, minutos] = funcion.hora.split(':').map(Number);
+    const duracion = funcion.peliculas?.duracionMinutos ?? 0;
+    const totalMinutos = horas * 60 + minutos + duracion;
+    const horaFin = Math.floor(totalMinutos / 60) % 24;
+    const minutoFin = totalMinutos % 60;
+    const diaSiguiente = Math.floor(totalMinutos / (24 * 60)) > 0;
+
+    return `${String(horaFin).padStart(2, '0')}:${String(minutoFin).padStart(2, '0')}${diaSiguiente ? ' (+1 día)' : ''}`;
+  }
 
   // Elimina una función y la quita de la lista visible.
   async eliminar(id: number) {

@@ -33,10 +33,18 @@ export class Sesion {
       }
     });
   }
-
+  
+  esCliente(): boolean {
+    return this.usuarioActual()?.rol === 'cliente';
+  }
   // Indica si el usuario actual tiene el rol de administrador.
   esAdmin(): boolean {
     return this.usuarioActual()?.rol === 'administrador';
+  }
+
+  esEmpleado(): boolean {
+    const rol = this.usuarioActual()?.rol;
+    return rol === 'empleado' || rol === 'administrador';
   }
 
   // Cierra la sesión del usuario actual.

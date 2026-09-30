@@ -7,7 +7,7 @@ import { Recompensas } from '../../../servicios/recompensas';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './recompensas.html',
-  styleUrl: './recompensas.css'
+  styleUrl: '../admin.css'
 })
 export class RecompensasComponent implements OnInit {
   recompensas = signal<any[]>([]);

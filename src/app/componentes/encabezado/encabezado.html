@@ -7,10 +7,16 @@
     <a routerLink="/proximamente" routerLinkActive="activo">Próximamente</a>
 
     @if (sesion.usuarioActual(); as usuario) {
+
+      @if (sesion.esCliente()) {
       <a routerLink="/mis-puntos" routerLinkActive="activo">Mis puntos</a>
       <a routerLink="/mis-peliculas" routerLinkActive="activo">Mis películas</a>
+      }
       @if (sesion.esAdmin()) {
         <a routerLink="/admin" routerLinkActive="activo">Admin</a>
+      }
+      @if (sesion.esEmpleado()) {
+        <a routerLink="/empleado/validar" routerLinkActive="activo">Validar</a>
       }
       <span class="saludo">Hola, {{ usuario.nombre }}</span>
       <button (click)="sesion.cerrarSesion()" class="boton-salir">Salir</button>

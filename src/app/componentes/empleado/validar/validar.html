@@ -1,0 +1,65 @@
+<section class="validador">
+  <h1>Validar entradas y productos</h1>
+
+  @if (!compra()) {
+    <div class="busqueda">
+      <input
+        type="text"
+        placeholder="Código de la compra"
+        [value]="codigoManual()"
+        (input)="codigoManual.set($any($event.target).value)"
+      />
+      <button (click)="buscar()" [disabled]="buscando()">Buscar</button>
+    </div>
+
+    @if (error()) {
+      <p class="error-general">{{ error() }}</p>
+    }
+  } @else {
+    <div class="resultado-compra">
+      <div class="encabezado-resultado">
+        <div>
+          <p><strong>Código:</strong> {{ compra().codigoQr }}</p>
+          <p><strong>Total:</strong> ${{ compra().total }}</p>
+        </div>
+        <button (click)="nuevaBusqueda()" class="boton-nueva-busqueda">Nueva búsqueda</button>
+      </div>
+
+      @if (error()) {
+        <p class="error-general">{{ error() }}</p>
+      }
+
+      <h3>Entradas</h3>
+      @for (entrada of entradas(); track entrada.id) {
+        <div class="item-validacion" [class.ya-validado]="entrada.validada">
+          <div>
+            <strong>{{ entrada.funciones.peliculas.nombre }}</strong>
+            — {{ entrada.butacas.fila }}{{ entrada.butacas.numero }} ({{ entrada.butacas.tipo }})
+            — {{ entrada.funciones.fecha }} {{ entrada.funciones.hora }}
+          </div>
+          @if (entrada.validada) {
+            <span class="etiqueta-validado">✓ Validada</span>
+          } @else {
+            <button (click)="validarEntrada(entrada)">Validar ingreso</button>
+          }
+        </div>
+      } @empty {
+        <p>Esta compra no tiene entradas.</p>
+      }
+
+      @if (productos().length > 0) {
+        <h3>Candy Bar</h3>
+        @for (producto of productos(); track producto.id) {
+          <div class="item-validacion" [class.ya-validado]="producto.retirado">
+            <div>{{ producto.cantidad }}x {{ producto.productos.nombre }}</div>
+            @if (producto.retirado) {
+              <span class="etiqueta-validado">✓ Retirado</span>
+            } @else {
+              <button (click)="validarProducto(producto)">Validar retiro</button>
+            }
+          </div>
+        }
+      }
+    </div>
+  }
+</section>

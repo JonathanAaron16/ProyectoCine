@@ -1,0 +1,95 @@
+.validador {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.busqueda {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.busqueda input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.busqueda button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #e50914;
+  color: white;
+}
+
+.boton-escanear {
+  background: #333 !important;
+}
+
+.boton-cancelar {
+  background: #666 !important;
+}
+
+.video-scanner {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 8px;
+}
+
+.oculto {
+  display: none;
+}
+
+.encabezado-resultado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.boton-nueva-busqueda {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.item-validacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.item-validacion.ya-validado {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.item-validacion button {
+  padding: 0.4rem 0.9rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.etiqueta-validado {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 0.8rem;
+}

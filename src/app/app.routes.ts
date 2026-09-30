@@ -2,6 +2,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './guards/admin-guard';
 import { formGuard } from './guards/form-guard';
+import { empleadoGuard } from './guards/empleado-guard';
 
 export const routes: Routes = [
   {
@@ -112,6 +113,12 @@ export const routes: Routes = [
   path: 'mis-peliculas',
   loadComponent: () => import('./componentes/mis-peliculas/mis-peliculas').then(m => m.MisPeliculas)
 },
+{
+  path: 'empleado/validar',
+  canActivate: [empleadoGuard],
+  loadComponent: () => import('./componentes/empleado/validar/validar').then(m => m.Validar)
+},
+
   {
     path: '**',
     loadComponent: () => import('./componentes/error/error').then(m => m.Error)
