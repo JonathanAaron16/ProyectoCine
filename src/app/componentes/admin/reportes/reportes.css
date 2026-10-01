@@ -1,0 +1,86 @@
+.filtros-fecha {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.filtros-fecha label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.filtros-fecha input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.2rem;
+}
+
+.filtros-fecha button {
+  padding: 0.55rem 1.2rem;
+  background: #e50914;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tarjetas-resumen {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-metrica {
+  flex: 1;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.tarjeta-metrica .valor {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #e50914;
+}
+
+.tarjeta-metrica .etiqueta {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.contenedor-grafico {
+  max-width: 100%;
+  margin-bottom: 2rem;
+}
+
+.columnas-tablas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.bloque-tabla h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.botones-exportar {
+  display: flex;
+  gap: 1rem;
+}
+
+.botones-exportar button {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}

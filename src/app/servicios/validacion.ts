@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { supabase } from './supabase-client';
+import { LogActividad } from './log-actividad';
 
 @Injectable({ providedIn: 'root' })
 export class Validacion {
+
+  constructor(private logService: LogActividad) {}
 
   async buscarCompraPorQr(codigo: string) {
     const { data: compra, error } = await supabase
@@ -45,6 +48,8 @@ export class Validacion {
     if (error) return { exito: false, error: 'No se pudo validar la entrada' };
     if (!data || data.length === 0) return { exito: false, error: 'Esta entrada ya fue validada antes' };
 
+    await this.logService.registrar(empleadoId, 'Validó código QR', `Entrada #${entradaId}`);
+
     return { exito: true, error: '' };
   }
 
@@ -58,6 +63,8 @@ export class Validacion {
 
     if (error) return { exito: false, error: 'No se pudo validar el producto' };
     if (!data || data.length === 0) return { exito: false, error: 'Este producto ya fue retirado antes' };
+
+    await this.logService.registrar(empleadoId, 'Validó código QR (producto)', `Producto comprado #${productoCompradoId}`);
 
     return { exito: true, error: '' };
   }

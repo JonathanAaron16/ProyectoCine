@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { supabase } from './supabase-client';
 import { Funcion } from '../models/funcion';
 
+import { LogActividad } from './log-actividad';
+import { Sesion } from './sesion';
+
 const BUFFER_MINUTOS = 30;
 
 // Convierte una fecha y una hora en un objeto Date.
@@ -17,6 +20,8 @@ function sumarMinutos(fecha: Date, minutos: number): Date {
 @Injectable({ providedIn: 'root' })
 export class Funciones {
 
+  constructor(private logService: LogActividad, private sesion: Sesion) {}
+
   // Obtiene todas las funciones junto con sus películas y salas.
   obtenerTodas() {
     return supabase
@@ -27,19 +32,30 @@ export class Funciones {
   }
 
   // Busca una sala disponible y crea una nueva función.
-  async crear(datos: Omit<Funcion, 'id' | 'salaId' | 'horaFin'>, duracionMinutos: number) {
-  const salaId = await this.buscarSalaDisponible(datos.fecha, datos.hora, duracionMinutos);
+  async crear(datos: Omit<Funcion, 'id' | 'salaId' | 'horaFin'>, duracionMinutos: number, nombrePelicula: string) {
+    const salaId = await this.buscarSalaDisponible(datos.fecha, datos.hora, duracionMinutos);
 
-  if (salaId === null) {
-    return { data: null, error: { message: 'No hay salas disponibles en ese horario' } };
+    if (salaId === null) {
+      return { data: null, error: { message: 'No hay salas disponibles en ese horario' } };
+    }
+
+    const inicio = horaAFecha(datos.fecha, datos.hora);
+    const fin = sumarMinutos(inicio, duracionMinutos);
+    const horaFin = fin.toTimeString().slice(0, 5);
+
+    const resultado = await supabase.from('funciones').insert([{ ...datos, salaId, horaFin }]).select().single();
+
+    const usuarioId = this.sesion.usuarioActual()?.id;
+    if (!resultado.error && usuarioId) {
+      await this.logService.registrar(
+        usuarioId,
+        'Creó función',
+        `${nombrePelicula} — ${datos.fecha} ${datos.hora}`
+      );
+    }
+
+    return resultado;
   }
-
-  const inicio = horaAFecha(datos.fecha, datos.hora);
-  const fin = sumarMinutos(inicio, duracionMinutos);
-  const horaFin = fin.toTimeString().slice(0, 5); // "HH:MM"
-
-  return supabase.from('funciones').insert([{ ...datos, salaId, horaFin }]).select().single();
-}
 
   // Elimina una función por su id.
   eliminar(id: number) {

@@ -2,8 +2,13 @@ import { Injectable } from '@angular/core';
 import { supabase } from './supabase-client';
 import { Producto } from '../models/producto';
 
+import { LogActividad } from './log-actividad';
+import { Sesion } from './sesion';
+
 @Injectable({ providedIn: 'root' })
 export class Productos {
+
+  constructor(private logService: LogActividad, private sesion: Sesion) {}
 
   obtenerCategorias() {
     return supabase.from('categorias_productos').select('*').order('nombre');
@@ -51,8 +56,17 @@ export class Productos {
     return { data, error: null };
   }
 
-  actualizar(id: number, producto: Partial<Omit<Producto, 'id'>>) {
-    return supabase.from('productos').update(producto).eq('id', id);
+  async actualizar(id: number, producto: Partial<Omit<Producto, 'id'>>) {
+    const resultado = await supabase.from('productos').update(producto).eq('id', id);
+
+    if (!resultado.error && producto.precio !== undefined) {
+      const usuarioId = this.sesion.usuarioActual()?.id;
+      if (usuarioId) {
+        await this.logService.registrar(usuarioId, 'Modificó precio', `Producto #${id} → $${producto.precio}`);
+      }
+    }
+
+    return resultado;
   }
 
   eliminar(id: number) {

@@ -65,7 +65,8 @@ export class FuncionesForm implements OnInit, Iform {
 
     const resultado = await this.funcionesService.crear(
       { ...datos, peliculaId: pelicula.id },
-      pelicula.duracionMinutos
+      pelicula.duracionMinutos,
+       pelicula.nombre
     );
 
     this.guardando.set(false);

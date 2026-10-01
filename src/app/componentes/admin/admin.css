@@ -18,7 +18,16 @@
   font-weight: bold;
   margin-right: 0.2rem;
 }
-
+.boton-secundario {
+  background: #bebaba;
+  color: #333;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-right: 0.2rem;
+}
+ 
 .tabla-admin {
   width: 100%;
   border-collapse: collapse;

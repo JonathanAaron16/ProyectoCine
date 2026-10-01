@@ -1,0 +1,32 @@
+<section class="panel-admin">
+  <h1>Registro de actividad</h1>
+
+  @if (cargando()) {
+    <p>Cargando...</p>
+  } @else {
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>Fecha y hora</th>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>Acción</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of registros(); track r.id) {
+          <tr>
+            <td>{{ r.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ r.usuarios.nombre }} {{ r.usuarios.apellido }}</td>
+            <td>{{ r.usuarios.rol }}</td>
+            <td>{{ r.accion }}</td>
+            <td>{{ r.detalle }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5">Todavía no hay actividad registrada.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
