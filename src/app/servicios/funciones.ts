@@ -27,15 +27,19 @@ export class Funciones {
   }
 
   // Busca una sala disponible y crea una nueva función.
-  async crear(datos: Omit<Funcion, 'id' | 'salaId'>, duracionMinutos: number) {
-    const salaId = await this.buscarSalaDisponible(datos.fecha, datos.hora, duracionMinutos);
+  async crear(datos: Omit<Funcion, 'id' | 'salaId' | 'horaFin'>, duracionMinutos: number) {
+  const salaId = await this.buscarSalaDisponible(datos.fecha, datos.hora, duracionMinutos);
 
-    if (salaId === null) {
-      return { data: null, error: { message: 'No hay salas disponibles en ese horario' } };
-    }
-
-    return supabase.from('funciones').insert([{ ...datos, salaId }]).select().single();
+  if (salaId === null) {
+    return { data: null, error: { message: 'No hay salas disponibles en ese horario' } };
   }
+
+  const inicio = horaAFecha(datos.fecha, datos.hora);
+  const fin = sumarMinutos(inicio, duracionMinutos);
+  const horaFin = fin.toTimeString().slice(0, 5); // "HH:MM"
+
+  return supabase.from('funciones').insert([{ ...datos, salaId, horaFin }]).select().single();
+}
 
   // Elimina una función por su id.
   eliminar(id: number) {

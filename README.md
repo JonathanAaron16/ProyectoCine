@@ -61,29 +61,29 @@ Completar `src/environments/environment.ts` con la URL y la anon key del proyect
 - [x] Cálculo de precio con recargo VIP
 - [x] Verificación de restricción de edad (+18)
 - [x] Confirmación de compra contra Supabase (con protección de doble venta)
-- [ ] Generación de código QR
-- [ ] Comprobante descargable en PDF
-- [ ] Pulir mapa de butacas (espaciado visual de sectores) — en progreso
+- [x] Generación de código QR
+- [x] Comprobante descargable en PDF
+- [x] Pulir mapa de butacas (espaciado visual de sectores) — en progreso
 
 ### ⬜ Split 8 — Candy Bar y combos
-- [ ] ABM de productos y combos
-- [ ] Carrito combinado con entradas
-- [ ] Retiro de productos con el mismo QR de la compra
+- [x] ABM de productos y combos
+- [x] Carrito combinado con entradas
+- [x] Retiro de productos con el mismo QR de la compra
 
 ### ⬜ Split 9 — Cupones, descuentos y fidelización
-- [ ] Cupones (primera compra, mayores de 50, generales)
-- [ ] Sistema de puntos
-- [ ] Recompensas y canje
+- [x] Cupones (primera compra, mayores de 50, generales)
+- [x] Sistema de puntos
+- [x] Recompensas y canje
 
 ### ⬜ Split 10 — Reseñas, próximas películas y "Mis películas"
 - [x] Lectura de reseñas (hecho en Split 4)
-- [ ] Carga de reseñas desde el cliente
-- [ ] Sección "Próximamente"
-- [ ] Alertas de estreno
+- [x] Carga de reseñas desde el cliente
+- [x] Sección "Próximamente"
+- [x] Alertas de estreno
 
 ### ⬜ Split 11 — Validación de entradas (empleados)
-- [ ] Escaneo/validación de QR en el ingreso
-- [ ] Marcado de entradas como usadas
+- [x] Escaneo/validación de QR en el ingreso
+- [x] Marcado de entradas como usadas
 
 ### ⬜ Split 12 — Reportes, estadísticas y log de actividad
 - [ ] Reportes de ventas
