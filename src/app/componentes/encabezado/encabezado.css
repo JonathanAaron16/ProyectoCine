@@ -39,7 +39,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   padding: 0.3rem 0;
-  transition: color 160ms ease;
+ 
 }
 
 .nav a::after {
@@ -52,7 +52,7 @@
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 200ms ease;
+  
 }
 
 .nav a:hover,
