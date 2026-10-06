@@ -86,3 +86,10 @@
   padding: 3rem;
   color: #999;
 }
+.funcion-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}

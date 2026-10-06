@@ -21,7 +21,15 @@
         }
       }
     </label>
-
+    <label>
+  Repetir contraseña
+  <input type="password" [formField]="registroForm.repetirPassword" />
+  @if (registroForm.repetirPassword().touched() && registroForm.repetirPassword().invalid()) {
+    @for (error of registroForm.repetirPassword().errors(); track error.kind) {
+      <small class="error-campo">{{ error.message }}</small>
+    }
+  }
+  </label>
     <label>
       Nombre
       <input type="text" [formField]="registroForm.nombre" />

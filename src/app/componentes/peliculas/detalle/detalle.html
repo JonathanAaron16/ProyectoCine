@@ -60,19 +60,6 @@
     </div>
   </section>
 
- <!-- <section id="funciones-disponibles" class="funciones-disponibles">
-    <h3>Funciones disponibles</h3>
-    @for (funcion of funciones(); track funcion.id) {
-      <a [routerLink]="['/compra', funcion.id]" class="funcion-item">
-        {{ funcion.fecha }} — {{ funcion.hora }} — {{ funcion.modalidad }} ({{ funcion.idioma }})
-      </a>
-    } @empty {
-      <p>No hay funciones programadas para esta película.</p>
-    }
-  </section> -->
-
-  
-
   <section class="resenas">
   <h2>Reseñas ⭐ {{ promedioCalificacion }} / 5</h2>
 
@@ -81,6 +68,7 @@
       <label>
         Tu calificación
         <select [formField]="calificacionForm.calificacion">
+          <app-errores-campo [campo]="calificacionForm.calificacion" />
           <option value="5">⭐⭐⭐⭐⭐ (5)</option>
           <option value="4">⭐⭐⭐⭐ (4)</option>
           <option value="3">⭐⭐⭐ (3)</option>
@@ -92,6 +80,7 @@
       <label>
         Comentario
         <textarea [formField]="calificacionForm.comentario" placeholder="¿Qué te pareció la película?"></textarea>
+        <app-errores-campo [campo]="calificacionForm.comentario" />
       </label>
 
       @if (errorResena()) {

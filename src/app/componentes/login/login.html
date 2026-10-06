@@ -5,11 +5,13 @@
     <label>
       Correo electrónico
       <input type="email" [formField]="loginForm.email" />
+      <app-errores-campo [campo]="loginForm.email" />
     </label>
 
     <label>
       Contraseña
       <input type="password" [formField]="loginForm.password" />
+      <app-errores-campo [campo]="loginForm.password" />
     </label>
 
     @if (errorLogin()) {

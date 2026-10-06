@@ -1,0 +1,5 @@
+@if (campo()().touched() && campo()().invalid()) {
+  @for (error of campo()().errors(); track error.kind) {
+    <small class="error-campo">{{ error.message }}</small>
+  }
+}

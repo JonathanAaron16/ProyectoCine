@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { form, FormField, required, email, min, max, minLength, pattern } from '@angular/forms/signals';
+import { form, FormField, required, email, min, max, minLength, pattern, validate } from '@angular/forms/signals';
 import { RouterLink, Router } from '@angular/router';
 import { RegistroData } from '../../models/registro-data';
 import { Auth } from '../../servicios/auth';
@@ -17,6 +17,7 @@ export class Registro {
   registroModel = signal<RegistroData>({
     email: '',
     password: '',
+    repetirPassword: '',
     nombre: '',
     apellido: '',
     fechaNacimiento: '',
@@ -31,6 +32,14 @@ export class Registro {
 
     required(schemaPath.password, { message: 'La contraseña es obligatoria' });
     minLength(schemaPath.password, 6, { message: 'Debe tener al menos 6 caracteres' });
+
+    required(schemaPath.repetirPassword, { message: 'Repetí la contraseña' });
+    validate(schemaPath.repetirPassword, ({ value, valueOf }) => {
+      if (value() !== '' && value() !== valueOf(schemaPath.password)) {
+        return { kind: 'noCoinciden', message: 'Las contraseñas no coinciden' };
+      }
+      return null;
+    });
 
     required(schemaPath.nombre, { message: 'El nombre es obligatorio' });
     minLength(schemaPath.nombre, 2, { message: 'El nombre es demasiado corto' });
@@ -58,6 +67,10 @@ export class Registro {
   // Registra la cuenta y crea el perfil del nuevo usuario.
   async onSubmit(event: Event) {
     event.preventDefault();
+    if (this.registroForm().invalid()) {
+      this.registroForm().markAsTouched();
+      return;
+    }
 
     const datos = this.registroModel();
 

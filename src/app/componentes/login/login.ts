@@ -4,9 +4,10 @@ import { RouterLink, Router } from '@angular/router';
 import { LoginData } from '../../models/login-data';
 import { Auth } from '../../servicios/auth';
 import { Usuarios } from '../../servicios/usuarios';
+import { ErroresCampo } from '../errores-campo/errores-campo';
 
 @Component({
-  imports: [FormField, RouterLink],
+  imports: [FormField, RouterLink, ErroresCampo],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',

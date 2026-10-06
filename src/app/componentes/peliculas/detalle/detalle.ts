@@ -9,11 +9,12 @@ import { supabase } from '../../../servicios/supabase-client';
 import { form, FormField, required, min, max } from '@angular/forms/signals';
 import { Sesion } from '../../../servicios/sesion';
 import { Compras } from '../../../servicios/compras';
+import { ErroresCampo } from '../../errores-campo/errores-campo';
 
 @Component({
   selector: 'app-detalle',
   standalone: true,
-  imports: [RouterLink,DatePipe,FormField],
+  imports: [RouterLink,DatePipe,FormField,ErroresCampo],
   templateUrl: './detalle.html',
   styleUrl: './detalle.css'
 })
