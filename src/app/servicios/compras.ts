@@ -178,7 +178,7 @@ async confirmarCompra(datos: {
     .eq('compras.usuarioId', usuarioId)
     .eq('compras.estado', 'confirmada');
 
-  console.log('Verificación de vista:', resultado);   // 👈 agregalo temporalmente
+  
 
   return (resultado.data?.length ?? 0) > 0;
 }

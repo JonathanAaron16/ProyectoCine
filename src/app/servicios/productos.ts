@@ -57,16 +57,45 @@ export class Productos {
   }
 
   async actualizar(id: number, producto: Partial<Omit<Producto, 'id'>>) {
+    let precioAnterior: number | null = null;
+
+    if (producto.precio !== undefined) {
+      const { data } = await supabase.from('productos').select('precio').eq('id', id).single();
+      precioAnterior = data ? Number(data.precio) : null;
+    }
+
     const resultado = await supabase.from('productos').update(producto).eq('id', id);
 
-    if (!resultado.error && producto.precio !== undefined) {
+    if (!resultado.error && producto.precio !== undefined && precioAnterior !== Number(producto.precio)) {
       const usuarioId = this.sesion.usuarioActual()?.id;
       if (usuarioId) {
-        await this.logService.registrar(usuarioId, 'Modificó precio', `Producto #${id} → $${producto.precio}`);
+        await this.logService.registrar(
+          usuarioId,
+          'Modificó precio',
+          `Producto #${id}: $${precioAnterior} → $${producto.precio}`
+        );
       }
     }
 
     return resultado;
+  }
+
+  obtenerPorId(id: number) {
+    return supabase.from('productos').select('*').eq('id', id).single();
+  }
+
+  obtenerItemsCombo(comboId: number) {
+    return supabase.from('productos_combo').select('productoId, cantidad').eq('comboId', comboId);
+  }
+
+  async reemplazarItemsCombo(comboId: number, items: { productoId: number; cantidad: number }[]) {
+    await supabase.from('productos_combo').delete().eq('comboId', comboId);
+
+    if (items.length === 0) return { error: null };
+
+    return supabase
+      .from('productos_combo')
+      .insert(items.map(i => ({ comboId, productoId: i.productoId, cantidad: i.cantidad })));
   }
 
   eliminar(id: number) {

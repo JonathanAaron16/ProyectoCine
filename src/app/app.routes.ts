@@ -80,6 +80,12 @@ export const routes: Routes = [
   loadComponent: () => import('./componentes/admin/productos-form/productos-form').then(m => m.ProductosForm)
 },
 {
+  path: 'admin/productos/:id/editar',
+  canActivate: [adminGuard],
+  canDeactivate: [formGuard],
+  loadComponent: () => import('./componentes/admin/productos-form/productos-form').then(m => m.ProductosForm)
+},
+{
   path: 'admin/cupones',
   canActivate: [adminGuard],
   loadComponent: () => import('./componentes/admin/cupones/cupones').then(m => m.CuponesComponent)

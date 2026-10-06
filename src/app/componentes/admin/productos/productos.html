@@ -26,7 +26,10 @@
             <td>${{ p.precio }}</td>
             <td>{{ p.esCombo ? 'Sí' : 'No' }}</td>
             <td>{{ p.disponible ? 'Sí' : 'No' }}</td>
-            <td><button (click)="eliminar(p.id)" class="boton-eliminar">Eliminar</button></td>
+            <td class="acciones">
+            <a [routerLink]="['/admin/productos', p.id, 'editar']">Editar</a>
+            <button (click)="eliminar(p.id)" class="boton-eliminar">Eliminar</button>
+          </td>
           </tr>
         } @empty {
           <tr><td colspan="6">No hay productos cargados.</td></tr>

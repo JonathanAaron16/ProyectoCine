@@ -1,32 +1,96 @@
-/* encabezado.css */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
 .encabezado {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #141414;
-  color: white;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 1.5rem;
+  background: rgba(20, 20, 20, 0.97);
+  color: #fff;
 }
 
 .logo {
-  font-size: 1.4rem;
-  font-weight: bold;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
   text-decoration: none;
-  color: white;
 }
 
 .nav {
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
 }
 
 .nav a {
-  color: #ccc;
+  position: relative;
+  color: #d6d6db;
   text-decoration: none;
   font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.3rem 0;
+  transition: color 160ms ease;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease;
 }
 
 .nav a:hover,
 .nav a.activo {
-  color: #e50914;
+  color: #fff;
+}
+
+.nav a:hover::after,
+.nav a.activo::after {
+  transform: scaleX(1);
+}
+
+.saludo {
+  color: #fff;
+  font-size: 0.9rem;
+  padding-left: 1rem;
+  border-left: 1px solid #3a3a40;
+}
+
+.boton-salir {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #5a5a62;
+  border-radius: var(--radius);
+  padding: 0.35rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.boton-salir:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .encabezado { padding: 0.7rem 1rem; }
+  .nav { width: 100%; gap: 0.2rem 0.9rem; }
+  .saludo { border-left: 0; padding-left: 0; }
 }

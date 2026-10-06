@@ -24,7 +24,7 @@ export class Listado implements OnInit {
   // Carga todas las películas cuando se inicia el listado.
   ngOnInit() {
     this.peliculasService.obtenerTodas().then(resultado => {
-      console.log('Resultado completo:', resultado); 
+     
       if (resultado.data) {
         this.peliculas.set(resultado.data.map(mapearPelicula));
       }

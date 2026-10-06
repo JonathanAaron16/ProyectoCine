@@ -10,7 +10,7 @@
 }
 
 .boton-agregar {
-  background: #e50914;
+  background: #fa000c;
   color: white;
   text-decoration: none;
   padding: 0.6rem 1.2rem;
@@ -50,6 +50,8 @@
   color: #e50914;
   text-decoration: none;
 }
+
+
 
 .boton-eliminar {
   background: none;

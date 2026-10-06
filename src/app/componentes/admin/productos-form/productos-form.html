@@ -1,6 +1,8 @@
 
 <section class="contenedor-form">
-  <h2>Nuevo producto</h2>
+  <h2>{{ esEdicion() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+
+  
 
   <div class="categoria-rapida">
     <input type="text" [value]="nuevaCategoria()" (input)="nuevaCategoria.set($any($event.target).value)" placeholder="Nueva categoría" />
@@ -26,7 +28,7 @@
     <label>
       Categoría
       <select [formField]="productoForm.categoriaId">
-        <option [value]="0">Seleccionar...</option>
+        <option [value]="">Seleccionar...</option>
         @for (c of categorias(); track c.id) {
           <option [value]="c.id">{{ c.nombre }}</option>
         }
@@ -68,6 +70,6 @@
       <p class="error-general">{{ errorGuardado() }}</p>
     }
 
-    <button type="submit">Crear producto</button>
+   <button type="submit">{{ esEdicion() ? 'Guardar cambios' : 'Crear producto' }}</button>
   </form>
 </section>

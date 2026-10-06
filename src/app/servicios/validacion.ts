@@ -8,15 +8,19 @@ export class Validacion {
   constructor(private logService: LogActividad) {}
 
   async buscarCompraPorQr(codigo: string) {
-    const { data: compra, error } = await supabase
-      .from('compras')
-      .select('*')
-      .eq('codigoQr', codigo.trim())
-      .maybeSingle();
+  const { data: compra, error } = await supabase
+    .from('compras')
+    .select('*')
+    .eq('codigoQr', codigo.trim())
+    .maybeSingle();
 
-    if (compra.estado === 'cancelada') {
-      return { compra: null, entradas: [], productos: [], error: 'Esta compra fue cancelada: el código ya no es válido' };
-    }
+  if (error || !compra) {
+    return { compra: null, entradas: [], productos: [], error: 'No se encontró ninguna compra con ese código' };
+  }
+
+  if (compra.estado === 'cancelada') {
+    return { compra: null, entradas: [], productos: [], error: 'Esta compra fue cancelada: el código ya no es válido' };
+  }
 
     const [resultadoEntradas, resultadoProductos] = await Promise.all([
       supabase
