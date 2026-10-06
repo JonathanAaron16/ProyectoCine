@@ -38,6 +38,7 @@ export class PeliculasForm implements OnInit, Iform {
     publicada: true,
     destacada: false,
     tienePreventa: false,
+    precioPreventa: 0,
     fechaEstreno: '',
   });
 
@@ -83,6 +84,7 @@ export class PeliculasForm implements OnInit, Iform {
           publicada: p.publicada,
           destacada: p.destacada,
           tienePreventa: p.tienePreventa,
+          precioPreventa: p.precioPreventa ?? 0,
           fechaEstreno: p.fechaEstreno ?? '',
         });
 

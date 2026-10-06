@@ -8,9 +8,10 @@ import { Cupones } from '../../servicios/cupones';
 import { Sesion } from '../../servicios/sesion';
 import { Butaca } from '../../models/butaca';
 import { Cupon } from '../../models/cupon';
+import { Subscription } from 'rxjs';
 
 const PRECIO_VIP_MULTIPLICADOR = 1.5;
-const INTERVALO_ACTUALIZACION_MS = 5000;
+
 
 @Component({
   selector: 'app-compra',
@@ -40,8 +41,12 @@ export class Compra implements OnInit, OnDestroy {
   compraConfirmada = signal<any>(null);
   qrDataUrl = signal('');
 
+  usarCredito = signal(false);
+
+
+  private suscripcion?: Subscription;
   private funcionId!: number;
-  private intervalo?: ReturnType<typeof setInterval>;
+  
   private butacasCompradas: Butaca[] = [];
 
   constructor(
@@ -67,16 +72,24 @@ export class Compra implements OnInit, OnDestroy {
     const resultadoProductos = await this.productosService.obtenerDisponibles();
     if (resultadoProductos.data) this.productosDisponibles.set(resultadoProductos.data);
 
-    await this.actualizarOcupadas();
-    this.cargando.set(false);
+  this.suscripcion = this.comprasService.obtenerOcupadasEnVivo(this.funcionId).subscribe({
+      next: (ocupadasActuales) => {
+        this.aplicarOcupadas(ocupadasActuales);
+        this.cargando.set(false);
+      },
+      error: (error) => {
+        console.error('Error de realtime:', error);
+        this.cargando.set(false);
+      },
+    });
 
-    this.intervalo = setInterval(() => this.actualizarOcupadas(), INTERVALO_ACTUALIZACION_MS);
+    
 
     this.cargarCuponBienvenida();
   }
 
   ngOnDestroy() {
-    if (this.intervalo) clearInterval(this.intervalo);
+    this.suscripcion?.unsubscribe();
   }
 
   private async cargarCuponBienvenida() {
@@ -90,17 +103,13 @@ export class Compra implements OnInit, OnDestroy {
     this.cuponBienvenida.set(await this.cuponesService.buscarCuponBienvenida(usuario));
   }
 
-  private async actualizarOcupadas() {
-    const resultado = await this.comprasService.obtenerButacasOcupadas(this.funcionId);
-    if (resultado.data) {
-      const ocupadasActuales = new Set(resultado.data.map((e: any) => e.butacaId));
-      const seleccionActualizada = new Set(
-        [...this.seleccionadas()].filter(id => !ocupadasActuales.has(id))
-      );
-      this.ocupadas.set(ocupadasActuales);
-      this.seleccionadas.set(seleccionActualizada);
-    }
-  }
+  private aplicarOcupadas(ocupadasActuales: Set<number>) {
+  const seleccionActualizada = new Set(
+    [...this.seleccionadas()].filter(id => !ocupadasActuales.has(id))
+  );
+  this.ocupadas.set(ocupadasActuales);
+  this.seleccionadas.set(seleccionActualizada);
+}
 
   toggleButaca(butaca: Butaca) {
     if (this.ocupadas().has(butaca.id)) return;
@@ -111,7 +120,7 @@ export class Compra implements OnInit, OnDestroy {
   }
 
   precioButaca(butaca: Butaca): number {
-    const base = this.funcion()?.precioBase ?? 0;
+    const base = this.precioBaseEfectivo;
     return butaca.tipo === 'vip' ? base * PRECIO_VIP_MULTIPLICADOR : base;
   }
 
@@ -172,8 +181,35 @@ export class Compra implements OnInit, OnDestroy {
   }
 
   get total(): number {
-    return this.subtotal - this.descuento;
+    return this.subtotal - this.descuento - this.creditoAplicado;
   }
+  get estaEnPreventa(): boolean {
+    const pelicula = this.funcion()?.peliculas;
+    if (!pelicula?.tienePreventa || !pelicula?.precioPreventa || !pelicula?.fechaEstreno) return false;
+
+    const hoy = new Date();
+    const estreno = new Date(pelicula.fechaEstreno);
+    const inicioPreventa = new Date(estreno);
+    inicioPreventa.setDate(inicioPreventa.getDate() - 7);
+
+    return hoy >= inicioPreventa && hoy < estreno;
+  }
+
+  get precioBaseEfectivo(): number {
+    if (this.estaEnPreventa) return this.funcion()?.peliculas?.precioPreventa ?? 0;
+    return this.funcion()?.precioBase ?? 0;
+  }
+
+  get creditoDisponible(): number {
+    return this.sesion.usuarioActual()?.credito ?? 0;
+  }
+
+  get creditoAplicado(): number {
+    if (!this.usarCredito()) return 0;
+    const maximoAplicable = this.subtotal - this.descuento;
+    return Math.min(this.creditoDisponible, maximoAplicable);
+  }
+
 
   async aplicarCupon(codigoManual?: string) {
     const codigo = (codigoManual ?? this.codigoCupon()).trim();
@@ -199,22 +235,37 @@ export class Compra implements OnInit, OnDestroy {
     this.errorCupon.set('');
   }
 
-  get requiereMayoriaDeEdad(): boolean {
-    return this.funcion()?.peliculas?.clasificacionEdad === '+18';
+  get edadMinima(): number {
+    const clasificacion = this.funcion()?.peliculas?.clasificacionEdad;
+    if (clasificacion === '+18') return 18;
+    if (clasificacion === '+13') return 13;
+    return 0;
+  }
+
+  private edadUsuario(): number | null {
+    const usuario = this.sesion.usuarioActual();
+    if (!usuario) return null;
+
+    const nacimiento = new Date(usuario.fechaNacimiento);
+    return Math.floor((Date.now() - nacimiento.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+  }
+
+  // Usuario registrado cuya edad es menor al mínimo de la película
+  get esMenorRegistrado(): boolean {
+    const edad = this.edadUsuario();
+    return edad !== null && edad < this.edadMinima;
+  }
+
+  // Usuario sin cuenta en una película con restricción: no podemos verificar la edad, solo avisar
+  get avisoAcompanante(): boolean {
+    return this.edadMinima > 0 && !this.sesion.cargando() && this.edadUsuario() === null;
   }
 
   get puedeComprar(): boolean {
+    if (this.sesion.cargando()) return false;
     if (this.seleccionadas().size === 0) return false;
-    if (this.requiereMayoriaDeEdad && !this.esMayorDeEdad()) return false;
+    if (this.esMenorRegistrado) return false;
     return true;
-  }
-
-  private esMayorDeEdad(): boolean {
-    const usuario = this.sesion.usuarioActual();
-    if (!usuario) return false;
-    const nacimiento = new Date(usuario.fechaNacimiento);
-    const edad = (Date.now() - nacimiento.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
-    return edad >= 18;
   }
 
   async confirmarCompra() {
@@ -239,17 +290,18 @@ export class Compra implements OnInit, OnDestroy {
       productos: productosParaComprar,
       cuponId: this.cuponAplicado()?.id ?? null,
       descuento: this.descuentoCompra(),
+      creditoUtilizado: this.creditoAplicado,
     });
 
     this.confirmando.set(false);
 
     if (resultado.error) {
-      this.errorConfirmacion.set('Una o más butacas ya fueron compradas por otra persona. Elegí de nuevo.');
-      await this.actualizarOcupadas();
+      this.errorConfirmacion.set('Una o más butacas ya fueron compradas por otra persona, o hubo un problema con el crédito. Revisá e intentá de nuevo.');
+      
       return;
     }
 
-    if (this.intervalo) clearInterval(this.intervalo);
+    this.suscripcion?.unsubscribe();
 
     this.compraConfirmada.set(resultado.data);
     this.qrDataUrl.set(await QRCode.toDataURL(resultado.data.codigoQr));
@@ -300,6 +352,12 @@ export class Compra implements OnInit, OnDestroy {
     y += 58;
     doc.setFontSize(9);
     doc.text(`Código: ${compra.codigoQr}`, 20, y);
+
+    if (this.avisoAcompanante) {
+      y += 8;
+      doc.setFontSize(9);
+      doc.text(`Aviso: función ${f.peliculas.clasificacionEdad}. Los menores de ${this.edadMinima} años deben asistir acompañados por un adulto.`, 20, y);
+    }
 
     doc.save(`entrada-${compra.id}.pdf`);
   }

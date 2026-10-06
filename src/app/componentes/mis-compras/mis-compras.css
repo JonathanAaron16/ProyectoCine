@@ -1,0 +1,51 @@
+.tarjeta-compra {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tarjeta-compra.cancelada {
+  opacity: 0.6;
+}
+
+.detalle-pequeno {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.total-compra {
+  font-weight: bold;
+}
+
+.estado-compra {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.estado-compra.confirmada {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.estado-compra.cancelada {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.boton-cancelar-compra {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e50914;
+  background: white;
+  color: #e50914;
+  border-radius: 6px;
+  cursor: pointer;
+}

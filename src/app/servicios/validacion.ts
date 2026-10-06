@@ -14,8 +14,8 @@ export class Validacion {
       .eq('codigoQr', codigo.trim())
       .maybeSingle();
 
-    if (error || !compra) {
-      return { compra: null, entradas: [], productos: [], error: 'No se encontró ninguna compra con ese código' };
+    if (compra.estado === 'cancelada') {
+      return { compra: null, entradas: [], productos: [], error: 'Esta compra fue cancelada: el código ya no es válido' };
     }
 
     const [resultadoEntradas, resultadoProductos] = await Promise.all([

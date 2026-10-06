@@ -77,6 +77,13 @@
       <input type="checkbox" [formField]="peliculaForm.tienePreventa" />
       Tiene preventa
     </label>
+    
+    @if (peliculaForm.tienePreventa().value()) {
+      <label>
+        Precio de preventa
+        <input type="number" [formField]="peliculaForm.precioPreventa" />
+      </label>
+    }
 
     <label>
       Fecha de estreno (si es "Próximamente")

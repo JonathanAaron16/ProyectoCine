@@ -1,0 +1,33 @@
+<section class="cabecera-seccion">
+  <h1>Mis compras</h1>
+</section>
+
+@if (cargando()) {
+  <p>Cargando...</p>
+} @else if (sesion.usuarioActual()) {
+  @for (compra of compras(); track compra.id) {
+    <div class="tarjeta-compra" [class.cancelada]="compra.estado === 'cancelada'">
+      <div class="info-compra">
+        <p><strong>{{ compra.entradas?.[0]?.funciones?.peliculas?.nombre }}</strong></p>
+        <p class="detalle-pequeno">
+          {{ compra.entradas?.[0]?.funciones?.fecha }} — {{ compra.entradas?.[0]?.funciones?.hora }}
+          — {{ compra.fecha | date:'dd/MM/yyyy' }}
+        </p>
+        <p class="total-compra">Total: ${{ compra.total }}</p>
+        <span class="estado-compra" [class]="compra.estado">{{ compra.estado }}</span>
+      </div>
+
+      @if (puedeCancelarse(compra)) {
+        <button (click)="cancelar(compra)" class="boton-cancelar-compra">Cancelar compra</button>
+      }
+
+      @if (mensajeError()[compra.id]) {
+        <p class="error-general">{{ mensajeError()[compra.id] }}</p>
+      }
+    </div>
+  } @empty {
+    <p>Todavía no hiciste ninguna compra.</p>
+  }
+} @else {
+  <p>Iniciá sesión para ver tus compras.</p>
+}

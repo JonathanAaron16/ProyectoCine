@@ -1,0 +1,1 @@
+import{C as Hy,Gt as ja,dt as Zv,x as Fa}from"./chunk-B60xHCxS.js";var s=class r{static ɵfac=function(e){return new(e||r)};static ɵcmp=Hy({type:r,selectors:[[`app-error`]],decls:2,vars:0,template:function(e,m){e&1&&(Fa(0,`p`),Zv(1,`error works!`),ja())},encapsulation:2})};export{s as Error};

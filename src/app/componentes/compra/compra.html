@@ -7,17 +7,32 @@
     <img [src]="qrDataUrl()" alt="Código QR de la compra" class="qr-imagen" />
     <p class="codigo-texto">{{ compra.codigoQr }}</p>
     <p class="total">Total pagado: ${{ compra.total }}</p>
+   
+    @if (avisoAcompanante) {
+      <p class="aviso-acompanante">Recordá: si sos menor de {{ edadMinima }} años, tenés que asistir acompañado por un adulto.</p>
+    }
+    
     <button (click)="descargarComprobante()" class="boton-confirmar">Descargar comprobante (PDF)</button>
     <a routerLink="/" class="volver-inicio">Volver al inicio</a>
   </section>
 } @else if (funcion(); as f) {
-  <section class="resumen-funcion">
-    <h1>{{ f.peliculas.nombre }}</h1>
-    <p>{{ f.fecha }} — {{ f.hora }} — {{ f.salas.nombre }} — {{ f.modalidad }} ({{ f.idioma }})</p>
-  </section>
+ <section class="resumen-funcion">
+  <h1>{{ f.peliculas.nombre }}</h1>
+  <p>{{ f.fecha }} — {{ f.hora }} — {{ f.salas.nombre }} — {{ f.modalidad }} ({{ f.idioma }})</p>
 
-  @if (requiereMayoriaDeEdad && !sesion.usuarioActual()) {
-    <p class="aviso-edad">Esta función es +18. Necesitás iniciar sesión para verificar tu edad antes de comprar.</p>
+  @if (estaEnPreventa) {
+    <span class="badge-preventa">🎟️ Precio de preventa</span>
+  }
+</section>
+
+  @if (esMenorRegistrado) {
+    <p class="aviso-edad">
+      Esta función es {{ f.peliculas.clasificacionEdad }}: no podés comprar entradas porque tu edad registrada es menor a {{ edadMinima }} años.
+    </p>
+  } @else if (avisoAcompanante) {
+    <p class="aviso-acompanante">
+      Esta función es {{ f.peliculas.clasificacionEdad }}. Si sos menor de {{ edadMinima }} años, tenés que asistir acompañado por un adulto.
+    </p>
   }
 
   <section class="leyenda">
@@ -123,6 +138,16 @@
   @if (cuponAplicado()) {
     <p class="linea-resumen">Subtotal: ${{ subtotal }}</p>
     <p class="linea-resumen descuento">Descuento: -${{ descuento }}</p>
+  }
+
+  @if (sesion.usuarioActual() && creditoDisponible > 0) {
+    <label class="opcion-credito">
+      <input type="checkbox" [checked]="usarCredito()" (change)="usarCredito.set(!usarCredito())" />
+      Usar mi crédito disponible (${{ creditoDisponible }})
+    </label>
+    @if (creditoAplicado > 0) {
+      <p class="linea-resumen descuento">Crédito aplicado: -${{ creditoAplicado }}</p>
+    }
   }
 
   <p class="total">Total: ${{ total }}</p>
